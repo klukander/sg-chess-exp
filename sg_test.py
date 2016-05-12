@@ -5,6 +5,8 @@ WCST experiment / ReKnow
 
 """
 import sys
+import zmq
+import math
 
 global USE_LSL; USE_LSL = False
 # Create LSL outlet
@@ -92,7 +94,7 @@ portCodes = {'clear' : 0,\
              'stop' : 255}
 
 
-def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0) ):
+def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0), flip=False ):
 
     hasPic = False; hasTxt = False; logTxt=False
     h = 0;
@@ -112,6 +114,9 @@ def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0) ):
             txt_to_log=txt[1:offset]
             txt=string.replace(txt, symbol, '')
         instr = visual.TextStim( win, text=txt, pos=(0,-50), color=col, colorSpace='rgb', height=25, wrapWidth=800, alignHoriz='center')
+
+    if flip:
+        instr.setOri(-90)
 
     if picFile != "":
         picFile = string.replace( picFile, '\\', s )
@@ -155,19 +160,75 @@ def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0) ):
 
     win.flip() #clear screen
 
-def DrawFrames(duration=-1):
+def DrawFrames(duration=-1, flip=False):
 
-    uprect = visual.Rect( win, 0.8*winW, 0.4*winH, fillColor='red', lineColor='red')
+    uprect = visual.Rect( win, .8*winW, .4*winH, fillColor='red', lineColor='red')
+#    if flip:
+#        uprect.setSize((0.4*w, 0.8*h))
+#    uprect.setPos((-.25*h,0))
+#    else:
+#        uprect.setSize((0.8*w, 0.4*h))
     uprect.setPos((0,.25*winH))
     uprect.draw(win)
 
-    dnrect = visual.Rect( win, 0.8*winW, 0.4*winH, fillColor='blue', lineColor='blue')
-    dnrect.setPos((0,-.25*winH))
+    dnrect = visual.Rect( win, .4*winW, .8*winH, fillColor='blue', lineColor='blue')
+    #if flip:
+    #    dnrect.setSize((0.4*w, 0.8*h))
+    #    dnrect.setPos((.25*h,0))
+    #else:
+    dnrect.setPos((0,-.25*winW))
     dnrect.draw(win)
 
     win.flip()
 
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
 
+def DrawChessBoard(left, top, width, height, squares, flip=False, duration=-1):
+
+    sqz = width / squares
+    sqzh = height/ squares
+    
+    #sqz = 0.6*winW/CHESS_SQUARES
+    #sqzh = 0.6*winH/CHESS_SQUARES
+    boardcoords = []
+    colors = []
+    for i in range(squares):
+        for j in range(squares):
+            tmp=[left+(i-1)*sqz, top+(j-1)*sqzh] 
+            colval = .5*((i+j)%2)
+            tmpcol=[colval, colval, colval]
+            boardcoords.append(tmp)
+            colors.append(tmpcol)
+
+    for sq in range(len(boardcoords)):
+        tmp = visual.Rect( win, sqz, sqzh)#(0.8*(1-(sq % 2)), 0.8*(1-(sq % 2)),0.8*(1-(sq % 2))))
+        tmp.fillColor = colors[sq]; tmp.colorSpace='rgb'
+        tmp.setPos(boardcoords[sq])
+        tmp.draw(win)
+        
+    win.flip()
+
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+
+def DrawSideBins(left, top, width, height, flip=False, duration=-1):
+    bin1 = visual.Rect(win, width, height)
+    bin1.setPos((left, int(round(top+height/2))))
+    bin1.fillColor = (1.0, 0.0, 0.0)
+    
+    bin2 = visual.Rect(win, width, height)
+    bin2.setPos((left, int(round(-1*top-height/2))))
+    bin2.fillColor = (0.0, 1.0, 0.0)
+    
+    bin1.draw(win)
+    bin2.draw(win)
+    
+    win.flip()
 
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
@@ -175,12 +236,31 @@ def DrawFrames(duration=-1):
         core.wait(duration)
 
 
+def zmqSend(msg):
+    print "sending %s" % msg
+    socketOut.send("%s %s" % ("psychopy", msg))
+    socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
+
+def zmqListen():
+    msg = socketIn.recv()
+    return msg
+
 def logThis( msg ):
     logging.log( msg, level=myLogLevel )
 
 # -------------------------------------------------------------------------------------------------#
 # - MAIN PROG -------------------------------------------------------------------------------------#
 # -------------------------------------------------------------------------------------------------#
+
+#initialize zmq
+context = zmq.Context()
+#socketIn = context.socket(zmq.SUB)
+socketOut = context.socket(zmq.PUB)
+#portIn = "5557"
+portOut = "5557"
+#socketIn.connect("tcp://127.0.0.1:%s" % portIn)
+socketOut.connect("tcp://127.0.0.1:%s" % portOut)
+
 
 #init random seed
 seed()
@@ -211,28 +291,55 @@ monH=[]
 mntrs.append( monitors.Monitor('DESKTOP', width=51.4, distance=50) ); monW.append(1920); monH.append(1200)
 #projector setup
 #the distance doesn't apply! 
+#the distance doesn't apply! 
 #w=69, h=149
-mntrs.append( monitors.Monitor('PROJECTOR', width=69.0, distance=50) ); monW.append(1050); monH.append(1400)
+mntrs.append( monitors.Monitor('PROJECTOR', width=69.0, distance=50) ); monW.append(1400); monH.append(1050)
 
-midx=0
+midx=1
 myMon=mntrs[midx]
 myMon.setSizePix((monW[midx], monH[midx]))
 
 #screen index now hardcoded to 0, was
 #int(confInfo[7])
+flip=True
+
+winOrientation = 0.0
+
+if flip:
+    winOrienation=-90.0
+else:
+    winOrientation = 0.0
+    
 win=visual.Window(winType='pyglet', size=(monW[midx], monH[midx]), units='pix', fullscr=False, monitor=myMon,\
-                screen=0, rgb=(1,1,1))
+                screen=1, rgb=(1,1,1), viewOri=winOrientation)
 
 
 global winW; winW = win.size[0]
 global winH; winH = win.size[1]
 
+zmqSend("EB") #event begin
+zmqSend("ZT") #zerotime
+#todo set zero time
 
-ShowPicInstruction("fickus", -1, "", "nolocus", (1.0, 0.0, 0.0))
+zmqSend("IB")
+ShowPicInstruction("Tehtavasi on pelata allaolevalla shakkilaudalla\nKuningattaren kvadrillia.\nSiirra kuningatar shakkisiirroilla pelaamalla\nPelilaudan oikeaan alakulmaan.", -1, "", "nolocus", (1.0, 0.0, 0.0), flip=True)
+zmqSend("IE")
 
-DrawFrames()
+zmqSend("TB")
+DrawChessBoard(250, -100, 500, 500, 4, flip=True)
+zmqSend("TE")
+
+zmqSend("IB")
+ShowPicInstruction("Lajittele mustat oikealle ja valkoiset vasemmalle.", -1, "", "nolocus", (1.0, 0.0, 0.0), flip=True)
+zmqSend("IE")
+
+zmqSend("TB")
+DrawSideBins(300, 300, 500, 250, flip=True)
+zmqSend("TE")
+
 
 event.clearEvents()
+zmqSend("EQ")
 
 
 #cleanup
