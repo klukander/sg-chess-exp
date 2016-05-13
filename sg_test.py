@@ -5,9 +5,14 @@ WCST experiment / ReKnow
 
 """
 import sys
-import zmq
 import math
 
+global USE_ZMQ; USE_ZMQ = False
+if USE_ZMQ:
+    import zmq
+
+
+"""
 global USE_LSL; USE_LSL = False
 # Create LSL outlet
 if USE_LSL:
@@ -16,7 +21,7 @@ if USE_LSL:
     global outlet
     info = StreamInfo('markerstream', 'markers', 1, 10, 'float32', 'streasdfsaamid002')
     outlet = StreamOutlet(info)
-
+"""
 
 from random import randint, random, seed
 from psychopy import visual,core,monitors,event,gui,logging#,parallel
@@ -33,66 +38,53 @@ if sys.platform.startswith('win'):
    
 # - GLOBALS -------------------------------------------------------------------------------------------
 global DEBUG; DEBUG = False
-global portCodes;
 global s; s=os.sep
-
-global paraport; paraport=0xEC00    # or 0xEC00, 0xE880
 
 global startTime; startTime = datetime.utcnow()
 
 """
-Additive port code scheme allows unique decoding with sparse set. 
+ZMQ messaging protocol
+Send strings consisting of character codes in distinct positions
 
-'clear'     : 0     triggers the parallel port
+for instance 
+    TQB = Task: Queen's Begin
+    MQQA1B2 = Move Queen from A1 to B2
+    ...
 
-'task1'     : 1    = global 1 rule, FACES or LETTERS
-'task2'     : 2    = global 2 rule, colour
-'task3'     : 3    = local 1 rule, shape or letter
-'task4'     : 4    = local 2 rule, orientation
+ZT  Zero Time -> set zerotime, respond with ZR
+ZR  Zero Response (for calculating pingback time)
 
-'segStart' : 8    = marks the start of a segment when combined with [baseline, instr, tlx, set]
-'segStop'  : 9    = marks the end of a segment when combined with -"-
+T   Task [Tx]
+    Q   Queen's Quadrille
+    M   Model copying
+    C   Color sort
+    V   Visual Search
+    P   Puzzle
 
-'cue'       : 10   = fixation cross before target stimulus
-'stimOn'    : 20   = target stimulus is shown
-'refsOn'    : 30   = four reference stimuli are shown
-'respRight' : 40   = correct response is received
-'respWrong' : 50   = wrong response is received
-'feedback'  : 60   = red/wrong or green/correct visual feedback to a response
-'baseline'  : 70   = baseline start
-'instr'     : 80   = marks the display of an instruction
-'tlx'       : 90   = marks the display of a questionnaire
+E   Event
+    Types?
 
-'set'       : 100   marks the beginning of a test/practice set
-'start'     : 254   marks the start of the experiment
-'stop'      : 255   marks the end of the experiment
+I   Instruction
 
-use: 
-    writePort( stimOn + rule1 ) -> 21
-    writePort( respRight + rul4 ) -> 44
-    writePort( baseline + segStart ) -> 78
+G   Gaze target
+    See pieces in "Move"
+
+xB  Begin
+xE  End
+
+M   Move
+    QQ0  Queen (there's only 1)
+    KW0  White King
+    KB0  Black King
+    B[B/W][1/2] Bishop, two of each color, BW1 = white bishop 1
+    T-"-        Tower
+    H-"-        Knight (Horseface)
 
 """
-portCodes = {'clear' : 0,\
-             'rule1' : 1,\
-             'rule2' : 2,\
-             'rule3' : 3,\
-             'rule4' : 4,\
-             'segStart' : 8,\
-             'segStop' : 9,\
-             'cue'   : 10,\
-             'stimOn' : 20,\
-             'refsOn' : 30,\
-             'respRight' : 40,\
-             'respWrong' : 50,\
-             'feedback' : 60,\
-             'base' : 70,\
-             'instr': 80,\
-             'tlx'  : 90,\
-             'set'  : 100,\
-             'start': 254,\
-             'stop' : 255}
 
+def ShowInstructionSequence( instrSequence ):
+    for item in instrSequence['pages']:
+        ShowPicInstruction( unicode(item['text']),int(item['duration']), item['pic'], 1)
 
 def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0), flip=False ):
 
@@ -235,11 +227,11 @@ def DrawSideBins(left, top, width, height, flip=False, duration=-1):
     else:
         core.wait(duration)
 
-
 def zmqSend(msg):
-    print "sending %s" % msg
-    socketOut.send("%s %s" % ("psychopy", msg))
-    socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
+    if USE_ZMQ:
+        print "sending %s" % msg
+        socketOut.send("%s %s" % ("psychopy", msg))
+        socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
 
 def zmqListen():
     msg = socketIn.recv()
@@ -252,15 +244,15 @@ def logThis( msg ):
 # - MAIN PROG -------------------------------------------------------------------------------------#
 # -------------------------------------------------------------------------------------------------#
 
-#initialize zmq
-context = zmq.Context()
-#socketIn = context.socket(zmq.SUB)
-socketOut = context.socket(zmq.PUB)
-#portIn = "5557"
-portOut = "5557"
-#socketIn.connect("tcp://127.0.0.1:%s" % portIn)
-socketOut.connect("tcp://127.0.0.1:%s" % portOut)
-
+if USE_ZMQ:
+    #initialize zmq
+    context = zmq.Context()
+    #socketIn = context.socket(zmq.SUB)
+    socketOut = context.socket(zmq.PUB)
+    #portIn = "5557"
+    portOut = "5557"
+    #socketIn.connect("tcp://127.0.0.1:%s" % portIn)
+    socketOut.connect("tcp://127.0.0.1:%s" % portOut)
 
 #init random seed
 seed()
@@ -317,10 +309,41 @@ win=visual.Window(winType='pyglet', size=(monW[midx], monH[midx]), units='pix', 
 global winW; winW = win.size[0]
 global winH; winH = win.size[1]
 
-zmqSend("EB") #event begin
+#load config
+#TODO: ADD ERROR CHECKING! Here we trust the json files to be correctly formed and valid
+confFile = open( '.'+s+'configs'+s+'testconfig'+'.json' )
+config = json.loads( confFile.read() )
+confFile.close()
+
 zmqSend("ZT") #zerotime
 #todo set zero time
 
+#run sets according to config loaded
+for item in config['sets']:
+
+    if( item['type'] == 'instruction'):
+        temp=string.replace( item['file'], '\\', s )
+        instrFile = open( temp )
+        instrSequence = json.loads( instrFile.read() )
+        instrFile.close()
+        zmqSend('IB')
+        ShowInstructionSequence( instrSequence )
+        zmqSend('IE')
+
+    elif( item['type'] == 'quadrille'):
+        zmqSend('TQB')
+        DrawChessBoard(250, -100, 500, 500, 4, flip=True)
+        zmqSend('TQE')
+
+    elif( item['type'] == 'colorsort'):
+        zmqSend('TCB')
+        DrawSideBins(300, 300, 500, 250, flip=True)
+        zmqSend('TCE')
+
+    else:
+        print 'unidentified item type in config: ' + item['type']
+
+"""
 zmqSend("IB")
 ShowPicInstruction("Tehtavasi on pelata allaolevalla shakkilaudalla\nKuningattaren kvadrillia.\nSiirra kuningatar shakkisiirroilla pelaamalla\nPelilaudan oikeaan alakulmaan.", -1, "", "nolocus", (1.0, 0.0, 0.0), flip=True)
 zmqSend("IE")
@@ -336,7 +359,7 @@ zmqSend("IE")
 zmqSend("TB")
 DrawSideBins(300, 300, 500, 250, flip=True)
 zmqSend("TE")
-
+"""
 
 event.clearEvents()
 zmqSend("EQ")
