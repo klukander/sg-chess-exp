@@ -5,6 +5,22 @@
          "file": ".\\instructions\\instr_1.json"
         },
         {"part": 1,
+         "type": "modelcopy",
+         "file": ".\\modelcopy_1.json"
+        },		
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_1.json"
+        },
+        {"part": 1,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 1,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
          "type": "quadrille",
          "file": ".\\none.json"
         },
@@ -12,7 +28,7 @@
          "type": "instruction",
          "file": ".\\instructions\\instr_2.json"
         },
-        {"part": 2,
+        {"part": 3,
          "type": "colorsort",
          "file": ".\\none.json"
         }

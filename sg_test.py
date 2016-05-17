@@ -23,7 +23,7 @@ if USE_LSL:
     outlet = StreamOutlet(info)
 """
 
-from random import randint, random, seed
+from random import randint, random, seed, sample
 from psychopy import visual,core,monitors,event,gui,logging#,parallel
 from copy import deepcopy
 import csv
@@ -84,12 +84,15 @@ M   Move
 
 def ShowInstructionSequence( instrSequence ):
     for item in instrSequence['pages']:
-        ShowPicInstruction( unicode(item['text']),int(item['duration']), item['pic'], 1)
+        ShowPicInstruction( unicode(item['text']),int(item['duration']), item['pic'], location=2, flip=True)
 
-def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0), flip=False ):
+def ShowPicInstruction( txt, duration, picFile, col=(0.0, 0.0, 0.0), location=0, flip=False ):
 
     hasPic = False; hasTxt = False; logTxt=False
     h = 0;
+
+    pic = visual.ImageStim( win );
+
 
     if txt != "":
         hasTxt=True
@@ -107,33 +110,44 @@ def ShowPicInstruction( txt, duration, picFile, location, col=(0.0, 0.0, 0.0), f
             txt=string.replace(txt, symbol, '')
         instr = visual.TextStim( win, text=txt, pos=(0,-50), color=col, colorSpace='rgb', height=25, wrapWidth=800, alignHoriz='center')
 
-    if flip:
-        instr.setOri(-90)
-
     if picFile != "":
         picFile = string.replace( picFile, '\\', s )
         hasPic = True
-        pic = visual.ImageStim( win );
         pic.setImage( picFile );
         h = pic.size
 
+    if flip:
+        instr.setOri(-90)
+        pic.setOri(-90)
+
+    if location == 1:
+        offset = (-300, 0)
+    elif location==2:
+        offset = (150, 0)
+    else:
+        offset = (0,0)
+
     if hasTxt:
         if hasPic:
-            textpos = ( 0, -1* instr.height/2 - 10)
-            picpos = ( 0, h[1]/2 + 20 )
+            if flip:
+                textpos = ( offset[0] -1* instr.height/2 - 10, offset[1] )
+                picpos = ( offset[0] + h[1]/2 + 20, offset[1] )
+            else:
+                textpos = ( offset[0] + 0, offset[1] -1* instr.height/2 - 10)
+                picpos = ( offset[0] + 0, offset[1] + h[1]/2 + 20 )
         else:
-            textpos = ( 0, 0 )
+            textpos = offset#( 0, 0 )
             picpos = ( -2000, -2000 )
     else:
-        picpos = (0, 0)
+        picpos = offset#(0, 0)
         textpos = ( -2000, -2000 )
 
     if hasPic:
-        pic.setPos( picpos );
+        pic.setPos( (offset[0]+picpos[0], offset[1]+picpos[1]) )
         pic.draw( win );
 
     if hasTxt:
-        instr.setPos( textpos )
+        instr.setPos( (offset[0] + textpos[0], offset[1] + textpos[1]) )
         instr.draw(win)
 
     win.flip()
@@ -208,7 +222,180 @@ def DrawChessBoard(left, top, width, height, squares, flip=False, duration=-1):
     else:
         core.wait(duration)
 
+def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
+
+    #load images
+    """    names={
+        1: 'bishop_b.bmp', \
+        2: 'bishop_b2.bmp', \
+        3: 'bishop_w.bmp', \
+        4: 'bishop_w2.bmp', \
+        5: 'king_b.bmp', \
+        6: 'king_w.bmp', \
+        7: 'knight_b.bmp', \
+        8: 'knight_b2.bmp', \
+        9: 'knight_w.bmp', \
+        10: 'knight_w2.bmp', \
+        11: 'queen_w.bmp', \
+        12: 'tower_b.bmp', \
+        13: 'tower_b2.bmp', \
+        14: 'tower_w.bmp', \
+        15: 'tower_w2.bmp'}
+    """
+
+    names=(
+        'bishop_b.jpg', \
+        'bishop_b2.jpg', \
+        'bishop_w.jpg', \
+        'bishop_w2.jpg', \
+        'king_b.jpg', \
+        'king_w.jpg', \
+        'knight_b.jpg', \
+        'knight_b2.jpg', \
+        'knight_w.jpg', \
+        'knight_w2.jpg', \
+        'queen_w.jpg', \
+        'tower_b.jpg', \
+        'tower_b2.jpg', \
+        'tower_w.jpg', \
+        'tower_w2.jpg')
+
+    gridpoints=[]
+    ptn = int(math.ceil( math.sqrt(itemnum) ))
+    for i in range( ptn ):
+        for j in range( ptn ):
+            jx = randint(0,40)-20; jy = randint(-15,15)
+            pt = (left+i*width/ptn + jx-(width/2), top+j*height/ptn + jy-(height/2))
+            gridpoints.append(pt)
+
+    #shuffle locations
+    gridpoints = sample( gridpoints, len(gridpoints))
+    itemlist=[]
+
+    dstrs = range(1, 15)
+    dstrs.remove(tgt)
+    #print dstrs
+
+    target = visual.ImageStim( win );
+    target.setImage( "pics\\" + names[tgt] )
+
+    count = len( dstrs )
+
+    for i in dstrs: #dstrs: #range(15-1): #removed one
+        picFile = "pics\\" + names[i]
+        picFile = string.replace( picFile, '\\', s )
+        pic = visual.ImageStim( win );
+        pic.setImage( picFile );
+        itemlist.append( pic )
+
+    """for i in range(15):
+        #itemlist[i].setPos( (randint(left, width), randint(top, height) ) )
+        itemlist[i].setPos( gridpoints[i])
+        itemlist[i].setOri( randint(0,180)-90 )
+        itemlist[i].draw(win)
+    """
+    for i in range( itemnum ):
+        #pic = visual.ImageStim( win )
+        #pic.setImage( itemlist[i%15] )
+        itemlist[i%count].setPos( gridpoints[i] )
+        itemlist[i%count].setOri( randint(-90, 90) )
+        itemlist[i%count].draw(win)
+    
+    target.setPos( gridpoints[tgt] )
+    target.setOri( randint(-90,90) )
+    target.draw(win)
+    
+    win.flip()
+
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+
+
+def DrawModelCopy(left, top, width, height, itemnum, duration=-1):
+
+    names=(
+        'bishop_b.jpg', \
+        'bishop_b2.jpg', \
+        'bishop_w.jpg', \
+        'bishop_w2.jpg', \
+        'king_b.jpg', \
+        'king_w.jpg', \
+        'knight_b.jpg', \
+        'knight_b2.jpg', \
+        'knight_w.jpg', \
+        'knight_w2.jpg', \
+        'queen_w.jpg', \
+        'tower_b.jpg', \
+        'tower_b2.jpg', \
+        'tower_w.jpg', \
+        'tower_w2.jpg')
+
+    gridpoints=[]
+    ptn = int(math.ceil( math.sqrt(itemnum) ))
+    #regular grid, no jitter
+    for i in range( ptn ):
+        for j in range( ptn ):
+            #jx = randint(0,40)-20; jy = randint(-15,15)
+            pt = (left+i*width/ptn -(width/2), top+j*height/ptn -(height/2))
+            gridpoints.append(pt)
+
+    #pick random locations
+    gridpoints = sample( gridpoints, itemnum) #len(gridpoints))
+
+    itemlist=[]
+    for i in range(15):
+        picFile = "pics\\" + names[i]
+        picFile = string.replace( picFile, '\\', s )
+        pic = visual.ImageStim( win );
+        pic.setImage( picFile );
+        itemlist.append( pic )
+
+    """for i in range(15):
+        #itemlist[i].setPos( (randint(left, width), randint(top, height) ) )
+        itemlist[i].setPos( gridpoints[i])
+        itemlist[i].setOri( randint(0,180)-90 )
+        itemlist[i].draw(win)
+        """
+    
+    picked = range(1, itemnum) #should be shorter than n of cards
+    
+    for i in range( itemnum ):
+        #pic = visual.ImageStim( win )
+        #pic.setImage( itemlist[i%15] )
+        itemlist[i%15].setPos( gridpoints[i] )
+        itemlist[i%15].setOri( -90)
+        itemlist[i%15].draw(win)
+        
+    win.flip()
+
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+
+
 def DrawSideBins(left, top, width, height, flip=False, duration=-1):
+
+    bin1 = visual.Rect(win, width, height)
+    bin1.setPos((left, int(round(top+height/2))))
+    bin1.fillColor = (1.0, 0.0, 0.0)
+    
+    bin2 = visual.Rect(win, width, height)
+    bin2.setPos((left, int(round(-1*top-height/2))))
+    bin2.fillColor = (0.0, 1.0, 0.0)
+    
+    bin1.draw(win)
+    bin2.draw(win)
+    
+    win.flip()
+
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+
     bin1 = visual.Rect(win, width, height)
     bin1.setPos((left, int(round(top+height/2))))
     bin1.fillColor = (1.0, 0.0, 0.0)
@@ -234,11 +421,23 @@ def zmqSend(msg):
         socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
 
 def zmqListen():
-    msg = socketIn.recv()
-    return msg
+    if USE_ZMQ:
+        msg = socketIn.recv()
+        return msg
 
 def logThis( msg ):
     logging.log( msg, level=myLogLevel )
+
+def Sync():
+    repeats = 5
+    for i in range(repeats):
+        t1 = datetime.utcnow()
+        zmqSend("ZT") #zerotime
+        if(zmqListen() == 'ZR' ):
+            t2 = datetime.utcnow()
+            print t2-t1
+        
+    #todo set zero time
 
 # -------------------------------------------------------------------------------------------------#
 # - MAIN PROG -------------------------------------------------------------------------------------#
@@ -268,7 +467,7 @@ myLog = logging.LogFile( '.'+s+'logs'+s+'' + 'test' + '.log', filemode='w', leve
 
 logThis('--------------------------------------------------------')
 logThis('INFO')
-logThis('timestamp [block].[trial]_CUE')
+logThis('timestamp [event type] [event info]')
 logThis('timestamp [block].[trial]_STM [state for each rule G1 G2 L1 L2 : 0,1,2,3] RULE [current rule]')
 logThis('timestamp [block].[trial]_TGT [states for each card / Up, Right, Down, Left: 0,1,2,3; 0,1,2,3;...]') 
 logThis('timestamp [block].[trial]_RSP [correct: 1/0] [current rule: G1, G2, L1, L2] ANSWER [card selected: 1(up), 2(right), 3(down), 4(left)]')
@@ -315,8 +514,7 @@ confFile = open( '.'+s+'configs'+s+'testconfig'+'.json' )
 config = json.loads( confFile.read() )
 confFile.close()
 
-zmqSend("ZT") #zerotime
-#todo set zero time
+Sync()
 
 #run sets according to config loaded
 for item in config['sets']:
@@ -329,6 +527,16 @@ for item in config['sets']:
         zmqSend('IB')
         ShowInstructionSequence( instrSequence )
         zmqSend('IE')
+
+    elif( item['type'] == 'vissearch'):
+        zmqSend('TSB')
+        DrawVisSearch( 300, 100, 950, 950, 36)
+        zmqSend('TSE')
+
+    elif( item['type'] == 'modelcopy'):
+        zmqSend('TMB')
+        DrawModelCopy( -300, 0, 512, 512, 7)
+        zmqSend('TME')
 
     elif( item['type'] == 'quadrille'):
         zmqSend('TQB')
@@ -343,23 +551,6 @@ for item in config['sets']:
     else:
         print 'unidentified item type in config: ' + item['type']
 
-"""
-zmqSend("IB")
-ShowPicInstruction("Tehtavasi on pelata allaolevalla shakkilaudalla\nKuningattaren kvadrillia.\nSiirra kuningatar shakkisiirroilla pelaamalla\nPelilaudan oikeaan alakulmaan.", -1, "", "nolocus", (1.0, 0.0, 0.0), flip=True)
-zmqSend("IE")
-
-zmqSend("TB")
-DrawChessBoard(250, -100, 500, 500, 4, flip=True)
-zmqSend("TE")
-
-zmqSend("IB")
-ShowPicInstruction("Lajittele mustat oikealle ja valkoiset vasemmalle.", -1, "", "nolocus", (1.0, 0.0, 0.0), flip=True)
-zmqSend("IE")
-
-zmqSend("TB")
-DrawSideBins(300, 300, 500, 250, flip=True)
-zmqSend("TE")
-"""
 
 event.clearEvents()
 zmqSend("EQ")
