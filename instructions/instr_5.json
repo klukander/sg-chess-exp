@@ -1,0 +1,12 @@
+{
+    "pages" : [
+         {"pic":  "", 
+          "duration": "-1",
+          "text": "Tervetuloa kokeeseen. \nJaadidaada."
+         },
+         {"pic":  ".\\pics\\model_1.jpg", 
+          "duration": "-1",
+          "text": "And then there were two."
+         }
+    ]
+}

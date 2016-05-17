@@ -204,7 +204,7 @@ def DrawChessBoard(left, top, width, height, squares, flip=False, duration=-1):
     for i in range(squares):
         for j in range(squares):
             tmp=[left+(i-1)*sqz, top+(j-1)*sqzh] 
-            colval = .5*((i+j)%2)
+            colval = 0.9-.5*((i+j)%2)
             tmpcol=[colval, colval, colval]
             boardcoords.append(tmp)
             colors.append(tmpcol)
@@ -272,12 +272,17 @@ def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
     gridpoints = sample( gridpoints, len(gridpoints))
     itemlist=[]
 
+    target = visual.ImageStim( win );
+    target.setImage( "pics\\" + names[tgt] )
+
+    target.setPos( gridpoints[tgt] )
+    del gridpoints[tgt] #avoid overlapping location
+    target.setSize(75)
+    target.setOri( randint(-90,90) )
+
     dstrs = range(1, 15)
     dstrs.remove(tgt)
     #print dstrs
-
-    target = visual.ImageStim( win );
-    target.setImage( "pics\\" + names[tgt] )
 
     count = len( dstrs )
 
@@ -286,6 +291,9 @@ def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
         picFile = string.replace( picFile, '\\', s )
         pic = visual.ImageStim( win );
         pic.setImage( picFile );
+        pic.setSize(75)
+        
+        
         itemlist.append( pic )
 
     """for i in range(15):
@@ -294,15 +302,13 @@ def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
         itemlist[i].setOri( randint(0,180)-90 )
         itemlist[i].draw(win)
     """
-    for i in range( itemnum ):
+    for i in range( itemnum-1 ):
         #pic = visual.ImageStim( win )
         #pic.setImage( itemlist[i%15] )
         itemlist[i%count].setPos( gridpoints[i] )
-        itemlist[i%count].setOri( randint(-90, 90) )
+        itemlist[i%count].setOri( randint(0,360) )
         itemlist[i%count].draw(win)
     
-    target.setPos( gridpoints[tgt] )
-    target.setOri( randint(-90,90) )
     target.draw(win)
     
     win.flip()
@@ -439,6 +445,30 @@ def Sync():
         
     #todo set zero time
 
+def DrawNumOrder( xpos, ypos, number, duration=-1):
+    wsq = 75
+    wsep = 4
+    wtot = number*wsq+(number-1)*wsep
+    
+    for i in range(number):
+        #stimpos = (xpos-0.5*wsq, ypos-wtot/2+i*(wsq+wsep)+wsq/2)
+        stimpos = (xpos-wtot/2+i*(wsq+wsep)-wsq/2, ypos-0.5*wsq)
+
+        tmp = visual.Rect( win, wsq, wsq, lineColor='black')
+        txt = visual.TextStim( win, text=str(i+1), color='red', colorSpace='rgb', height=25, wrapWidth=100, alignHoriz='center')
+        tmp.setPos(stimpos)
+        txt.setPos(stimpos)
+        txt.setOri(-90)
+        tmp.draw(win)
+        txt.draw(win)
+
+    win.flip()
+
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+
 # -------------------------------------------------------------------------------------------------#
 # - MAIN PROG -------------------------------------------------------------------------------------#
 # -------------------------------------------------------------------------------------------------#
@@ -502,7 +532,7 @@ else:
     winOrientation = 0.0
     
 win=visual.Window(winType='pyglet', size=(monW[midx], monH[midx]), units='pix', fullscr=False, monitor=myMon,\
-                screen=1, rgb=(1,1,1), viewOri=winOrientation)
+                screen=1, rgb=(-1, -1, -1), viewOri=winOrientation)
 
 
 global winW; winW = win.size[0]
@@ -510,7 +540,7 @@ global winH; winH = win.size[1]
 
 #load config
 #TODO: ADD ERROR CHECKING! Here we trust the json files to be correctly formed and valid
-confFile = open( '.'+s+'configs'+s+'testconfig'+'.json' )
+confFile = open( '.'+s+'configs'+s+'democonfig'+'.json' )
 config = json.loads( confFile.read() )
 confFile.close()
 
@@ -527,6 +557,11 @@ for item in config['sets']:
         zmqSend('IB')
         ShowInstructionSequence( instrSequence )
         zmqSend('IE')
+
+    elif( item['type'] == 'numberorder'):
+        zmqSend('TNB')
+        DrawNumOrder( 110, -425, 15)
+        zmqSend('TNE')
 
     elif( item['type'] == 'vissearch'):
         zmqSend('TSB')

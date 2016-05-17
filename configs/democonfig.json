@@ -1,0 +1,44 @@
+{
+    "sets": [
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_1.json"
+        },
+       {"part": 1,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_2.json"
+        },		
+       {"part": 1,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3.json"
+        },
+       {"part": 1,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4.json"
+        },
+        {"part": 2,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_5.json"
+        },
+        {"part": 3,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        }
+    ]
+}
