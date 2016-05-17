@@ -1,0 +1,5 @@
+#dirs
+logs/
+
+#files
+*.pyc
