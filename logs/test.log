@@ -1,8 +1,4 @@
 0.0002 	 	--------------------------------------------------------
-0.0002 	 	INFO
+0.0003 	 	INFO
 0.0003 	 	timestamp [event type] [event info]
-0.0003 	 	timestamp [block].[trial]_STM [state for each rule G1 G2 L1 L2 : 0,1,2,3] RULE [current rule]
-0.0003 	 	timestamp [block].[trial]_TGT [states for each card / Up, Right, Down, Left: 0,1,2,3; 0,1,2,3;...]
-0.0003 	 	timestamp [block].[trial]_RSP [correct: 1/0] [current rule: G1, G2, L1, L2] ANSWER [card selected: 1(up), 2(right), 3(down), 4(left)]
-0.0003 	 	timestamp [block].[trial]_FDB [correct/fail] [correct answers] of [series length]
 0.0003 	 	--------------------------------------------------------

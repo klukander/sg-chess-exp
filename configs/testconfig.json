@@ -5,8 +5,16 @@
          "file": ".\\instructions\\instr_1.json"
         },
         {"part": 1,
-         "type": "modelcopy",
-         "file": ".\\modelcopy_1.json"
+         "type": "modelcopy2",
+         "file": "pics\\gamepos1.png"
+        },		
+        {"part": 1,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos2.png"
+        },		
+        {"part": 1,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos3.png"
         },		
         {"part": 0,
          "type": "instruction",

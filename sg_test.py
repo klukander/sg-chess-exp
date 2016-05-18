@@ -376,6 +376,28 @@ def DrawModelCopy(left, top, width, height, itemnum, duration=-1):
         core.wait(duration)
 
 
+def DrawModelCopyFromPic(xpos, ypos, filename, chessboard=True, duration=-1):
+
+    picFile = filename
+    picFile = string.replace( picFile, '\\', s)
+    pic = visual.ImageStim( win )
+    pic.setImage( picFile )
+    pic.setPos( (xpos, ypos))
+    pic.setOri( -90 )
+    pic.setSize( 512)
+    pic.draw( win )
+    
+    if chessboard:
+        DrawChessBoard(250, -100, 500, 500, 4, flip=True, duration=duration) #has its own wait
+
+    else: #
+        win.flip()
+        if duration < 0:
+            keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+        else:
+            core.wait(duration)
+
+
 def DrawSideBins(left, top, width, height, flip=False, duration=-1):
 
     bin1 = visual.Rect(win, width, height)
@@ -422,9 +444,8 @@ def zmqSend(msg):
 
 def zmqListen():
     if USE_ZMQ:
-        msg = socketIn.recv()
-        return msg
-
+        socketIn.listen()
+        
 def logThis( msg ):
     logging.log( msg, level=myLogLevel )
 
@@ -468,10 +489,10 @@ myLog = logging.LogFile( '.'+s+'logs'+s+'' + 'test' + '.log', filemode='w', leve
 logThis('--------------------------------------------------------')
 logThis('INFO')
 logThis('timestamp [event type] [event info]')
-logThis('timestamp [block].[trial]_STM [state for each rule G1 G2 L1 L2 : 0,1,2,3] RULE [current rule]')
+"""logThis('timestamp [block].[trial]_STM [state for each rule G1 G2 L1 L2 : 0,1,2,3] RULE [current rule]')
 logThis('timestamp [block].[trial]_TGT [states for each card / Up, Right, Down, Left: 0,1,2,3; 0,1,2,3;...]') 
 logThis('timestamp [block].[trial]_RSP [correct: 1/0] [current rule: G1, G2, L1, L2] ANSWER [card selected: 1(up), 2(right), 3(down), 4(left)]')
-logThis('timestamp [block].[trial]_FDB [correct/fail] [correct answers] of [series length]')
+logThis('timestamp [block].[trial]_FDB [correct/fail] [correct answers] of [series length]')"""
 logThis('--------------------------------------------------------')
 
 #rendering window setup
@@ -486,7 +507,7 @@ mntrs.append( monitors.Monitor('DESKTOP', width=51.4, distance=50) ); monW.appen
 #w=69, h=149
 mntrs.append( monitors.Monitor('PROJECTOR', width=69.0, distance=50) ); monW.append(1400); monH.append(1050)
 
-midx=1
+midx=0
 myMon=mntrs[midx]
 myMon.setSizePix((monW[midx], monH[midx]))
 
@@ -536,6 +557,11 @@ for item in config['sets']:
     elif( item['type'] == 'modelcopy'):
         zmqSend('TMB')
         DrawModelCopy( -300, 0, 512, 512, 7)
+        zmqSend('TME')
+        
+    elif( item['type'] == 'modelcopy2'):
+        zmqSend('TMB')
+        DrawModelCopyFromPic( -300, 0, item['file'])
         zmqSend('TME')
 
     elif( item['type'] == 'quadrille'):
