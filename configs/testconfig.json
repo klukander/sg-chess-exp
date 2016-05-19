@@ -2,43 +2,55 @@
     "sets": [
         {"part": 0,
          "type": "instruction",
-         "file": ".\\instructions\\instr_1.json"
+         "file": ".\\instructions\\instr_0.json"
         },
-        {"part": 1,
-         "type": "modelcopy2",
-         "file": "pics\\gamepos1.png"
-        },		
-        {"part": 1,
-         "type": "modelcopy2",
-         "file": "pics\\gamepos2.png"
-        },		
-        {"part": 1,
-         "type": "modelcopy2",
-         "file": "pics\\gamepos3.png"
-        },		
+        {"part": 0,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
         {"part": 0,
          "type": "instruction",
          "file": ".\\instructions\\instr_1.json"
         },
-        {"part": 1,
-         "type": "vissearch",
-         "file": ".\\none.json"
-        },
-        {"part": 1,
-         "type": "vissearch",
-         "file": ".\\none.json"
-        },
-        {"part": 2,
-         "type": "quadrille",
+        {"part": 0,
+         "type": "colorsort",
          "file": ".\\none.json"
         },
         {"part": 0,
          "type": "instruction",
          "file": ".\\instructions\\instr_2.json"
         },
-        {"part": 3,
-         "type": "colorsort",
+        {"part": 0,
+         "type": "numberorder",
          "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3.json"
+        },		
+        {"part": 0,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "vissearch",
+         "file": ".\\none.json"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4.json"
+        },
+        {"part": 0,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos1.png"
+        },
+        {"part": 0,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_end.json"
         }
    ]
 }

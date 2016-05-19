@@ -1,12 +1,9 @@
+
 {
     "pages" : [
          {"pic":  "", 
           "duration": "-1",
-          "text": "Tervetuloa kokeeseen. \nJaadidaada."
-         },
-         {"pic":  ".\\pics\\model_1.jpg", 
-          "duration": "-1",
-          "text": "And then there were two."
+          "text": "Hienoa. Seuraavassa tehtävässä sinun tulee järjestää nappulat numerojärjestykseen nappuloiden oikeassa alalaidassa olevan numeron mukaisesti.\n\nPaina välilyöntiä kun olet valmis aloittamaan."
          }
     ]
 }
