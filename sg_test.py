@@ -7,7 +7,7 @@ WCST experiment / ReKnow
 import sys
 import math
 
-global USE_ZMQ; USE_ZMQ = False
+global USE_ZMQ; USE_ZMQ = True
 if USE_ZMQ:
     import zmq
 
@@ -84,7 +84,7 @@ M   Move
 
 def ShowInstructionSequence( instrSequence ):
     for item in instrSequence['pages']:
-        ShowPicInstruction( unicode(item['text']),int(item['duration']), item['pic'], location=2, flip=True)
+        ShowPicInstruction( unicode(item['text']),int(item['duration']), item['pic'], location=1, flip=True)
 
 def ShowPicInstruction( txt, duration, picFile, col=(0.0, 0.0, 0.0), location=0, flip=False ):
 
@@ -121,7 +121,8 @@ def ShowPicInstruction( txt, duration, picFile, col=(0.0, 0.0, 0.0), location=0,
         pic.setOri(-90)
 
     if location == 1:
-        offset = (-300, 0)
+        offset = (-100, 0)
+        offset = (-100, 0)
     elif location==2:
         offset = (150, 0)
     else:
@@ -131,7 +132,7 @@ def ShowPicInstruction( txt, duration, picFile, col=(0.0, 0.0, 0.0), location=0,
         if hasPic:
             if flip:
                 textpos = ( offset[0] -1* instr.height/2 - 10, offset[1] )
-                picpos = ( offset[0] + h[1]/2 + 20, offset[1] )
+                picpos = ( offset[0] + h[1]/2 -350, offset[1] )
             else:
                 textpos = ( offset[0] + 0, offset[1] -1* instr.height/2 - 10)
                 picpos = ( offset[0] + 0, offset[1] + h[1]/2 + 20 )
@@ -192,7 +193,7 @@ def DrawFrames(duration=-1, flip=False):
     else:
         core.wait(duration)
 
-def DrawChessBoard(left, top, width, height, squares, flip=False, duration=-1):
+def DrawChessBoard(xpos, ypos, width, height, squares, flip=False, duration=-1):
 
     sqz = width / squares
     sqzh = height/ squares
@@ -203,7 +204,8 @@ def DrawChessBoard(left, top, width, height, squares, flip=False, duration=-1):
     colors = []
     for i in range(squares):
         for j in range(squares):
-            tmp=[left+(i-1)*sqz, top+(j-1)*sqzh] 
+            #tmp=[left+(i-1)*sqz, top+(j-1)*sqzh] 
+            tmp=[xpos-(width/2)+i*sqz+sqz/2, ypos-(height/2)+j*sqzh+sqzh/2] 
             colval = 0.9-.5*((i+j)%2)
             tmpcol=[colval, colval, colval]
             boardcoords.append(tmp)
@@ -221,6 +223,20 @@ def DrawChessBoard(left, top, width, height, squares, flip=False, duration=-1):
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
+
+def DrawCalibTargets(xpos, ypos, width, height, flip=False, duration=-1):
+
+    tmp = visual.Rect( win, width, height )
+    tmp.fillColor = (-1, -1, -1); tmp.colorSpace = 'RGB'
+    tmp.setPos((xpos, ypos))
+    tmp.draw(win)
+    
+    win.flip()
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+
 
 def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
 
@@ -424,24 +440,6 @@ def DrawSideBins(left, top, width, height, flip=False, duration=-1):
     else:
         core.wait(duration)
 
-    bin1 = visual.Rect(win, width, height)
-    bin1.setPos((left, int(round(top+height/2))))
-    bin1.fillColor = (1.0, 0.0, 0.0)
-    
-    bin2 = visual.Rect(win, width, height)
-    bin2.setPos((left, int(round(-1*top-height/2))))
-    bin2.fillColor = (0.0, 1.0, 0.0)
-    
-    bin1.draw(win)
-    bin2.draw(win)
-    
-    win.flip()
-
-    if duration < 0:
-        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
-    else:
-        core.wait(duration)
-
 def zmqSend(msg):
     if USE_ZMQ:
         print "sending %s" % msg
@@ -449,8 +447,9 @@ def zmqSend(msg):
         socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
 
 def zmqListen():
-    if USE_ZMQ:
-        socketIn.listen()
+    tmp = 0
+    #if USE_ZMQ:
+    #    socketIn.listen()
         
 def logThis( msg ):
     logging.log( msg, level=myLogLevel )
@@ -537,7 +536,7 @@ mntrs.append( monitors.Monitor('DESKTOP', width=51.4, distance=50) ); monW.appen
 #w=69, h=149
 mntrs.append( monitors.Monitor('PROJECTOR', width=69.0, distance=50) ); monW.append(1400); monH.append(1050)
 
-midx=0
+midx=1
 myMon=mntrs[midx]
 myMon.setSizePix((monW[midx], monH[midx]))
 
@@ -558,7 +557,7 @@ win=visual.Window(winType='pyglet', size=(monW[midx], monH[midx]), units='pix', 
 
 global winW; winW = win.size[0]
 global winH; winH = win.size[1]
-
+  
 #load config
 #TODO: ADD ERROR CHECKING! Here we trust the json files to be correctly formed and valid
 confFile = open( '.'+s+'configs'+s+'testconfig'+'.json' )
@@ -601,13 +600,19 @@ for item in config['sets']:
 
     elif( item['type'] == 'quadrille'):
         zmqSend('TQB')
-        DrawChessBoard(250, -100, 500, 500, 4, flip=True)
+        #DrawChessBoard(250, -100, 500, 500, 4, flip=True)
+        DrawChessBoard(350, 0, 500, 500, 4, flip=True)
         zmqSend('TQE')
 
     elif( item['type'] == 'colorsort'):
         zmqSend('TCB')
         DrawSideBins(300, 300, 500, 250, flip=True)
         zmqSend('TCE')
+
+    elif( item['type'] == 'calib'):
+        zmqSend('ECB')
+        DrawCalibTargets(350, 0, 500, 500)
+        zmqSend('ECE')
 
     else:
         print 'unidentified item type in config: ' + item['type']
