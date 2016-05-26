@@ -13,7 +13,7 @@ if USE_ZMQ:
 
 
 """
-global USE_LSL; USE_LSL = False
+global USE_LSL; USE_LSL = False 
 # Create LSL outlet
 if USE_LSL:
     sys.path.append('C:\Program Files (x86)\PsychoPy2\Lib\pylsl')
