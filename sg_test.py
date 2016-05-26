@@ -7,7 +7,7 @@ WCST experiment / ReKnow
 import sys
 import math
 
-global USE_ZMQ; USE_ZMQ = True
+global USE_ZMQ; USE_ZMQ = False
 if USE_ZMQ:
     import zmq
 
@@ -155,7 +155,7 @@ def ShowPicInstruction( txt, duration, picFile, col=(0.0, 0.0, 0.0), location=0,
     if duration < 0:
         if logTxt:
             #triggerAndLog(portCodes['tlx'] + portCodes['segStart'] , "{:02d}".format(currentSet) + '.0_' + txt_to_log + " TLX start")
-            keys = event.waitKeys(keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+            keys = event.waitKeys(keys=['space'])
             #triggerAndLog(portcodes['tlx'] + portCodes['segStop'], "{:02d}".format(currentSet) + '.0_' + txt_to_log + ' TLX : ' + str(keys[0]))
         else:
             event.waitKeys()
@@ -187,11 +187,12 @@ def DrawFrames(duration=-1, flip=False):
     dnrect.draw(win)
 
     win.flip()
-
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
+"""
 
 def DrawChessBoard(xpos, ypos, width, height, squares, flip=False, duration=-1):
 
@@ -219,11 +220,12 @@ def DrawChessBoard(xpos, ypos, width, height, squares, flip=False, duration=-1):
         
     win.flip()
 
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
-
+"""
 def DrawCalibTargets(xpos, ypos, width, height, flip=False, duration=-1):
 
     tmp = visual.Rect( win, width, height )
@@ -231,14 +233,14 @@ def DrawCalibTargets(xpos, ypos, width, height, flip=False, duration=-1):
     tmp.setPos((xpos, ypos))
     tmp.draw(win)
     
-    win.flip()
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
+"""
 
-
-def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
+def DrawVisSearch(left, top, width, height, itemnum, targetVisible=True, tgt=10, duration=-1, ):
 
     #load images
     """    names={
@@ -281,24 +283,26 @@ def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
     for i in range( ptn ):
         for j in range( ptn ):
             jx = randint(0,40)-20; jy = randint(-15,15)
-            pt = (left+i*width/ptn + jx-(width/2), top+j*height/ptn + jy-(height/2))
+            pt = (left+(i-.5)*width/ptn + jx-(width/2), top+(j)*height/ptn + jy-(height/2))
             gridpoints.append(pt)
 
     #shuffle locations
     gridpoints = sample( gridpoints, len(gridpoints))
     itemlist=[]
 
-    target = visual.ImageStim( win );
-    target.setImage( "pics\\" + names[tgt] )
-
-    target.setPos( gridpoints[tgt] )
-    del gridpoints[tgt] #avoid overlapping location
-    target.setSize(75)
-    target.setOri( randint(-90,90) )
-
     dstrs = range(1, 15)
-    dstrs.remove(tgt)
-    #print dstrs
+    dstrs.remove(tgt) # this has to be removed anyway to not show up :)
+
+    if targetVisible: # if tgt < 0, no target, and no removals
+        
+        target = visual.ImageStim( win );
+        target.setImage( "pics\\" + names[tgt] )
+
+        target.setPos( gridpoints[tgt] )
+        del gridpoints[tgt] #avoid overlapping location
+        target.setSize(75)
+        target.setOri( randint(-90,90) )
+
 
     count = len( dstrs )
 
@@ -308,7 +312,6 @@ def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
         pic = visual.ImageStim( win );
         pic.setImage( picFile );
         pic.setSize(75)
-        
         
         itemlist.append( pic )
 
@@ -324,16 +327,18 @@ def DrawVisSearch(left, top, width, height, itemnum, tgt=10, duration=-1):
         itemlist[i%count].setPos( gridpoints[i] )
         itemlist[i%count].setOri( randint(0,360) )
         itemlist[i%count].draw(win)
-    
-    target.draw(win)
+
+    if targetVisible:
+        target.draw(win)
     
     win.flip()
 
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
-
+"""
 
 def DrawModelCopy(left, top, width, height, itemnum, duration=-1):
 
@@ -392,11 +397,12 @@ def DrawModelCopy(left, top, width, height, itemnum, duration=-1):
         
     win.flip()
 
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
-
+"""
 
 def DrawModelCopyFromPic(xpos, ypos, filename, chessboard=True, duration=-1):
 
@@ -410,15 +416,16 @@ def DrawModelCopyFromPic(xpos, ypos, filename, chessboard=True, duration=-1):
     pic.draw( win )
     
     if chessboard:
-        DrawChessBoard(250, -100, 500, 500, 4, flip=True, duration=duration) #has its own wait
+        DrawChessBoard(350, 0, 500, 500, 4, flip=True, duration = duration) # has its own wait
 
     else: #
         win.flip()
-        if duration < 0:
-            keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
-        else:
-            core.wait(duration)
-
+"""
+    if duration < 0:
+        keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+    else:
+        core.wait(duration)
+"""
 
 def DrawSideBins(left, top, width, height, flip=False, duration=-1):
 
@@ -435,16 +442,17 @@ def DrawSideBins(left, top, width, height, flip=False, duration=-1):
     
     win.flip()
 
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
-
+"""
 def zmqSend(msg):
     if USE_ZMQ:
         print "sending %s" % msg
-        socketOut.send("%s %s" % ("psychopy", msg))
-        socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
+        socketOut.send("%s" % (msg))
+        #socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
 
 def zmqListen():
     tmp = 0
@@ -465,6 +473,12 @@ def Sync():
         
     #todo set zero time
 
+def WaitForIt( keys=['x'], duration=-1 ):
+    if duration < 0:
+        keys = event.waitKeys(keys)
+    else:
+        core.wait(duration)
+
 def DrawNumOrder( xpos, ypos, number, duration=-1):
     wsq = 75
     wsep = 4
@@ -484,24 +498,32 @@ def DrawNumOrder( xpos, ypos, number, duration=-1):
 
     win.flip()
 
+"""
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
     else:
         core.wait(duration)
-
+"""
 # -------------------------------------------------------------------------------------------------#
 # - MAIN PROG -------------------------------------------------------------------------------------#
 # -------------------------------------------------------------------------------------------------#
+
+"""
+g = m
+r = x
+b = space
+"""
 
 if USE_ZMQ:
     #initialize zmq
     context = zmq.Context()
     #socketIn = context.socket(zmq.SUB)
-    socketOut = context.socket(zmq.PUB)
+    socketOut = context.socket(zmq.PAIR)
     #portIn = "5557"
-    portOut = "5557"
+    portOut = "5555"
     #socketIn.connect("tcp://127.0.0.1:%s" % portIn)
-    socketOut.connect("tcp://127.0.0.1:%s" % portOut)
+#socketOut.connect("tcp://127.0.0.1:%s" % portOut)
+    socketOut.bind("tcp://192.168.2.183:%s" % portOut)
 
 #init random seed
 seed()
@@ -581,37 +603,49 @@ for item in config['sets']:
     elif( item['type'] == 'numberorder'):
         zmqSend('TNB')
         DrawNumOrder( 110, -425, 15)
+        WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TNE')
 
     elif( item['type'] == 'vissearch'):
+
+        targetVisible = True
+        if item['target'] == 'false':
+            targetVisible = False
+            
         zmqSend('TSB')
-        DrawVisSearch( 300, 100, 950, 950, 36)
+        DrawVisSearch( 300, 100, 950, 950, 64, targetVisible, tgt=10, duration=-1)
+        WaitForIt( keys=['x', 'b'], duration=-1 ) #only red&green buttons (x, m)
         zmqSend('TSE')
 
     elif( item['type'] == 'modelcopy'):
         zmqSend('TMB')
         DrawModelCopy( -300, 0, 512, 512, 7)
+        WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TME')
         
     elif( item['type'] == 'modelcopy2'):
         zmqSend('TMB')
         DrawModelCopyFromPic( -300, 0, item['file'])
+        WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TME')
 
     elif( item['type'] == 'quadrille'):
         zmqSend('TQB')
         #DrawChessBoard(250, -100, 500, 500, 4, flip=True)
         DrawChessBoard(350, 0, 500, 500, 4, flip=True)
+        WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TQE')
 
     elif( item['type'] == 'colorsort'):
         zmqSend('TCB')
         DrawSideBins(300, 300, 500, 250, flip=True)
+        WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TCE')
 
     elif( item['type'] == 'calib'):
         zmqSend('ECB')
         DrawCalibTargets(350, 0, 500, 500)
+        WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('ECE')
 
     else:
@@ -620,7 +654,6 @@ for item in config['sets']:
 
 event.clearEvents()
 zmqSend("EQ")
-
 
 #cleanup
 win.close()

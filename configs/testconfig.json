@@ -39,7 +39,7 @@
         },
         {"part": 1,
          "type": "vissearch",
-		 "target" : "true",
+		 "target": "true",
          "file": ".\\none.json"
         },
         {"part": 1,
