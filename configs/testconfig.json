@@ -2,57 +2,532 @@
     "sets": [
         {"part": 0,
          "type": "calib",
-         "file": ".\\instructions\\instr_0.json"
+         "file": "none"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "instruction",
-         "file": ".\\instructions\\instr_0.json"
+         "file": ".\\instructions\\instr_1_1.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "quadrille",
          "file": ".\\none.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "instruction",
-         "file": ".\\instructions\\instr_1.json"
+         "file": ".\\instructions\\instr_1_2.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "colorsort",
          "file": ".\\none.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "instruction",
-         "file": ".\\instructions\\instr_2.json"
+         "file": ".\\instructions\\instr_1_3.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "numberorder",
          "file": ".\\none.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "instruction",
-         "file": ".\\instructions\\instr_3.json"
+         "file": ".\\instructions\\instr_1_4.json"
         },		
-        {"part": 0,
+        {"part": 1,
          "type": "vissearch",
+		 "target" : "true",
          "file": ".\\none.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "vissearch",
+		 "target" : "true",
          "file": ".\\none.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "vissearch",
+		 "target" : "true",
          "file": ".\\none.json"
         },
-        {"part": 0,
+        {"part": 1,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 1,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 1,
          "type": "instruction",
-         "file": ".\\instructions\\instr_4.json"
+         "file": ".\\instructions\\instr_1_5.json"
         },
-        {"part": 0,
+        {"part": 1,
          "type": "modelcopy2",
-         "file": "pics\\gamepos1.png"
+         "file": "pics\\gamepos2.png"
         },
-        {"part": 0,
+		{"part": 1,
+		 "type": "_comment",
+		 "text": "<part 1 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+        {"part": 2,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_2_1.json"
+        },
+        {"part": 2,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_2_2.json"
+        },
+        {"part": 2,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_2_3.json"
+        },
+        {"part": 2,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_2_4.json"
+        },		
+        {"part": 2,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 2,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_2_5.json"
+        },
+        {"part": 2,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos3.png"
+        },
+		{"part": 2,
+		 "type": "_comment",
+		 "text": "<part 2 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+        {"part": 3,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3_1.json"
+        },
+        {"part": 3,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3_2.json"
+        },
+        {"part": 3,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3_3.json"
+        },
+        {"part": 3,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3_4.json"
+        },		
+        {"part": 3,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 3,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_3_5.json"
+        },
+        {"part": 3,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos4.png"
+        },
+		{"part": 3,
+		 "type": "_comment",
+		 "text": "<part 3 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+        {"part": 4,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4_1.json"
+        },
+        {"part": 4,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4_2.json"
+        },
+        {"part": 4,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4_3.json"
+        },
+        {"part": 4,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4_4.json"
+        },		
+        {"part": 4,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 4,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_4_5.json"
+        },
+        {"part": 4,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos5.png"
+        },
+		{"part": 4,
+		 "type": "_comment",
+		 "text": "<part 4 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+
+        {"part": 5,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_5_1.json"
+        },
+        {"part": 5,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_5_2.json"
+        },
+        {"part": 5,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_5_3.json"
+        },
+        {"part": 5,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_5_4.json"
+        },		
+        {"part": 5,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 5,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_5_5.json"
+        },
+        {"part": 5,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos6.png"
+        },
+		{"part": 5,
+		 "type": "_comment",
+		 "text": "<part 1 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+        {"part": 6,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_6_1.json"
+        },
+        {"part": 6,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_6_2.json"
+        },
+        {"part": 6,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_6_3.json"
+        },
+        {"part": 6,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_6_4.json"
+        },		
+        {"part": 6,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 6,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_6_5.json"
+        },
+        {"part": 6,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos7.png"
+        },
+		{"part": 6,
+		 "type": "_comment",
+		 "text": "<part 2 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+        {"part": 7,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_7_1.json"
+        },
+        {"part": 7,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_7_2.json"
+        },
+        {"part": 7,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_7_3.json"
+        },
+        {"part": 7,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_7_4.json"
+        },		
+        {"part": 7,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 7,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_7_5.json"
+        },
+        {"part": 7,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos8.png"
+        },
+		{"part": 7,
+		 "type": "_comment",
+		 "text": "<part 7 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+        {"part": 8,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_8_1.json"
+        },
+        {"part": 8,
+         "type": "quadrille",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_8_2.json"
+        },
+        {"part": 8,
+         "type": "colorsort",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_8_3.json"
+        },
+        {"part": 8,
+         "type": "numberorder",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_8_4.json"
+        },		
+        {"part": 8,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "vissearch",
+		 "target" : "false",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "vissearch",
+		 "target" : "true",
+         "file": ".\\none.json"
+        },
+        {"part": 8,
+         "type": "instruction",
+         "file": ".\\instructions\\instr_8_5.json"
+        },
+        {"part": 8,
+         "type": "modelcopy2",
+         "file": "pics\\gamepos9.png"
+        },
+		{"part": 8,
+		 "type": "_comment",
+		 "text": "<part 8 ends here ------------------------------------------------------------------------------------------------------------------------->"}
+		},
+		
+
+        {"part": 9,
          "type": "instruction",
          "file": ".\\instructions\\instr_end.json"
         }

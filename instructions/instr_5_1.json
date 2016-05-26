@@ -1,0 +1,16 @@
+{
+    "pages" : [
+         {"pic":  "", 
+          "duration": "-1",
+          "text": "Tervetuloa kokeeseen. \nTeet kokeessa erilaisia tehtäviä edessasi olevilla nappuloilla."
+         },
+         {"pic":  "", 
+          "duration": "-1",
+          "text": "Tee tehtävät huolellisesti ja täsmällisesti.\nKäytä koetta tehdessäsi vain toista kättä ja siirrä vain yhtä nappulaa kerrallaan.\n\nHelpotat tällä koedatan analysointia."
+         },
+         {"pic":  "", 
+          "duration": "-1",
+          "text": "Ensimmäiseksi pelaat Queen's Quadrille -peliä.\n\nSiirrä kuningatar pelilaudan vasemmasta yläkulmasta oikeaan alakulmaan käyttäen vain shakkisiirtoja.\n\nKun olet valmis aloittamaan, paina valilyönti-painiketta."
+         }
+    ]
+}
