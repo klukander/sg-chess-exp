@@ -34,14 +34,17 @@
         },		
         {"part": 0,
          "type": "vissearch",
+		 "target": "false",
          "file": ".\\none.json"
         },
         {"part": 0,
          "type": "vissearch",
+		 "target": "true",
          "file": ".\\none.json"
         },
         {"part": 0,
          "type": "vissearch",
+		 "target": "false",
          "file": ".\\none.json"
         },
         {"part": 0,
