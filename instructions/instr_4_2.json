@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  "", 
           "duration": "-1",
-          "text": "Hyvä!\n Seuraavaksi lajittele pelinappulat ruudun laitaan ilmestyviin laatikoihin\nsiten, että\n- valkoiset nappulat ovat vasemmalla ja \n- mustat nappulat oikella.\n\nPaina välilyöntiä kun olet valmis aloittamaan."
+          "text": "Muistathan myös lukea kaikki ohjeet huolellisesti koko rupeaman ajan?\n\nSeuraavaksi vuorossa nappuloiden lajittelu mustiin ja valkoisiin. Mustat vasemmalle, valkoiset oikealle.\nVoit aloittaa!"
          }
     ]
 }

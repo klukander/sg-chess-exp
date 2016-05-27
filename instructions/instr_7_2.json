@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  "", 
           "duration": "-1",
-          "text": "Hyvä!\n Seuraavaksi lajittele pelinappulat ruudun laitaan ilmestyviin laatikoihin\nsiten, että\n- valkoiset nappulat ovat vasemmalla ja \n- mustat nappulat oikella.\n\nPaina välilyöntiä kun olet valmis aloittamaan."
+          "text": "Seuraavaksi jaetaan nappulat taas värin mukaan kahteen ilmestyvään laatikkoon.\nValkoiset vasemmalle, mustat oikealle.\n\nAloita painamalla vastauspainiketta."
          }
     ]
 }

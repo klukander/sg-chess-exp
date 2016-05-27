@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  ".\\pics\\queen_w.jpg", 
           "duration": "-1",
-          "text": "Hienoa. Seuraavassa tehtävässä pöydän pinnalle\nheijastetaan pelinappuloiden kuvia satunnaisesti.\nSinun tehtäväsi on löytää pelinappuloiden joukosta valkoinen kuningatar.\n\nOsoita löytämäsi nappula kokeen valvojalle.\nVoit painaa välilyöntiä aloittaaksesi.\n\nEtsintätehtävä toistuu kolme kertaa.\nKun kokeenvalvoja antaa luvan, pääset seuraavaan\ntehtävään painamalla välilyöntiä."
+          "text": "Nyt etsitään kuningatarta muiden nappuloiden joukosta. Paina vihreää painiketta jos löydät kuningattaren, punaista jos et.\n\nTehtävä alkaa painamalla vastauspainiketta."
          }
     ]
 }

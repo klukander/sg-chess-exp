@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  "", 
           "duration": "-1",
-          "text": "Hyvä. Seuraavassa tehtävässä sinun tulee kopioida\nylempänä näytettävä malli alalaidan pelilaudalle.\n\nKun olet valmis aloittamaan, paina välilyöntiä."
+          "text": "Pelilauta pitäisi taas alustaa (tämä on lähestulkoon viimeinen kerta!). \n\nKopioi ylälaidan mallin mukainen asetelma pelilaudalle."
          }
     ]
 }

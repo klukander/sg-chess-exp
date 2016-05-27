@@ -1,9 +1,8 @@
-
 {
     "pages" : [
          {"pic":  "", 
           "duration": "-1",
-          "text": "Hienoa. Seuraavassa tehtävässä sinun tulee järjestää nappulat numerojärjestykseen nappuloiden oikeassa alalaidassa olevan numeron mukaisesti.\n\nPaina välilyöntiä kun olet valmis aloittamaan."
+          "text": "Seuraavassa tehtävässä järjestä nappulat taas vasemman laidan laatikoihin numerojärjestykseen. Muistathan suorittaa tehtävät siirtäen vain yhtä nappulaa kerrallaan.\n\nVoit aloittaa kun olet valmis."
          }
     ]
 }
