@@ -7,7 +7,7 @@ WCST experiment / ReKnow
 import sys
 import math
 
-global USE_ZMQ; USE_ZMQ = False
+global USE_ZMQ; USE_ZMQ = True
 if USE_ZMQ:
     import zmq
 
@@ -558,7 +558,7 @@ mntrs.append( monitors.Monitor('DESKTOP', width=51.4, distance=50) ); monW.appen
 #w=69, h=149
 mntrs.append( monitors.Monitor('PROJECTOR', width=69.0, distance=50) ); monW.append(1400); monH.append(1050)
 
-midx=0
+midx=1
 myMon=mntrs[midx]
 myMon.setSizePix((monW[midx], monH[midx]))
 
@@ -573,7 +573,7 @@ if flip:
 else:
     winOrientation = 0.0
     
-win=visual.Window(winType='pyglet', size=(monW[midx], monH[midx]), pos=(10,10), units='pix', fullscr=False, monitor=myMon,\
+win=visual.Window(winType='pyglet', size=(monW[midx], monH[midx]), units='pix', fullscr=False, monitor=myMon,\
                 screen=1, rgb=(1,1,1), viewOri=winOrientation)
 
 
