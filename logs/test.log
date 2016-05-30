@@ -1,4 +1,232 @@
 0.0003 	 	--------------------------------------------------------
-0.0003 	 	INFO
-0.0003 	 	timestamp [event type] [event info]
-0.0003 	 	--------------------------------------------------------
+0.0004 	 	INFO
+0.0004 	 	timestamp [event type] [event info]
+0.0004 	 	--------------------------------------------------------
+2.4150 	 	Begin Calibration 0
+10.2729 	 	End Calibration 0
+10.2792 	 	Begin Instruction 1.1
+23.5160 	 	End Instruction 1.1
+23.5163 	 	Begin Quadrille 1.2
+24.3285 	 	End Quadrille 1.2
+24.3332 	 	Begin Instruction 1.3
+28.4992 	 	End Instruction 1.3
+28.4994 	 	Begin Color Sort 1.4
+29.2247 	 	End Color Sort 1.4
+29.2291 	 	Begin Instruction 1.5
+34.2587 	 	End Instruction 1.5
+34.2588 	 	Begin Number Order 1.6
+35.4808 	 	End Number Order 1.6
+35.4830 	 	Begin Instruction 1.7
+39.3066 	 	End Instruction 1.7
+39.3068 	 	Begin Visual Search 1.8.1
+39.7690 	 	End Visual Search 1.8.1
+39.7691 	 	Begin Visual Search 1.8.2
+40.1288 	 	End Visual Search 1.8.2
+40.1289 	 	Begin Visual Search 1.8.3
+40.5369 	 	End Visual Search 1.8.3
+40.5370 	 	Begin Visual Search 1.8.4
+40.9366 	 	End Visual Search 1.8.4
+40.9368 	 	Begin Visual Search 1.8.5
+41.3765 	 	End Visual Search 1.8.5
+41.3787 	 	Begin Instruction 1.9
+41.9469 	 	End Instruction 1.9
+41.9471 	 	Begin Model Copy 1.10
+42.9450 	 	End Model Copy 1.10
+42.9493 	 	Begin Instruction 2
+45.7591 	 	End Instruction 2
+45.7593 	 	Begin Quadrille 2
+47.2085 	 	End Quadrille 2
+47.2106 	 	Begin Instruction 2
+50.9653 	 	End Instruction 2
+50.9654 	 	Begin Color Sort 2
+51.5929 	 	End Color Sort 2
+51.5953 	 	Begin Instruction 2
+52.4672 	 	End Instruction 2
+52.4673 	 	Begin Number Order 2
+54.2087 	 	End Number Order 2
+54.2134 	 	Begin Instruction 2
+55.2832 	 	End Instruction 2
+55.2834 	 	Begin Visual Search 2
+56.7128 	 	End Visual Search 2
+56.7130 	 	Begin Visual Search 2
+57.2649 	 	End Visual Search 2
+57.2650 	 	Begin Visual Search 2
+57.4644 	 	End Visual Search 2
+57.4646 	 	Begin Visual Search 2
+57.5929 	 	End Visual Search 2
+57.5931 	 	Begin Visual Search 2
+57.9929 	 	End Visual Search 2
+57.9951 	 	Begin Instruction 2
+59.7150 	 	End Instruction 2
+59.7152 	 	Begin Model Copy 2
+66.0086 	 	End Model Copy 2
+66.0136 	 	Begin Instruction 3
+83.9351 	 	End Instruction 3
+83.9353 	 	Begin Quadrille 3
+85.6329 	 	End Quadrille 3
+85.6353 	 	Begin Instruction 3
+87.9257 	 	End Instruction 3
+87.9259 	 	Begin Color Sort 3
+89.5845 	 	End Color Sort 3
+89.5864 	 	Begin Instruction 3
+130.4434 	 	End Instruction 3
+130.4436 	 	Begin Number Order 3
+131.1605 	 	End Number Order 3
+131.1630 	 	Begin Instruction 3
+133.1309 	 	End Instruction 3
+133.1310 	 	Begin Visual Search 3
+133.7848 	 	End Visual Search 3
+133.7849 	 	Begin Visual Search 3
+133.9685 	 	End Visual Search 3
+133.9687 	 	Begin Visual Search 3
+134.1448 	 	End Visual Search 3
+134.1449 	 	Begin Visual Search 3
+134.2888 	 	End Visual Search 3
+134.2889 	 	Begin Visual Search 3
+134.6407 	 	End Visual Search 3
+134.6429 	 	Begin Instruction 3
+136.7863 	 	End Instruction 3
+136.7864 	 	Begin Model Copy 3
+138.3205 	 	End Model Copy 3
+138.3247 	 	Begin Instruction 4
+140.7897 	 	End Instruction 4
+140.7899 	 	Begin Quadrille 4
+142.1609 	 	End Quadrille 4
+142.1633 	 	Begin Instruction 4
+143.3506 	 	End Instruction 4
+143.3508 	 	Begin Color Sort 4
+143.9848 	 	End Color Sort 4
+143.9868 	 	Begin Instruction 4
+144.4274 	 	End Instruction 4
+144.4276 	 	Begin Number Order 4
+145.0008 	 	End Number Order 4
+145.0031 	 	Begin Instruction 4
+145.5466 	 	End Instruction 4
+145.5467 	 	Begin Visual Search 4
+151.9128 	 	End Visual Search 4
+151.9129 	 	Begin Visual Search 4
+152.6164 	 	End Visual Search 4
+152.6165 	 	Begin Visual Search 4
+153.2249 	 	End Visual Search 4
+153.2250 	 	Begin Visual Search 4
+153.9130 	 	End Visual Search 4
+153.9131 	 	Begin Visual Search 4
+154.6645 	 	End Visual Search 4
+154.6667 	 	Begin Instruction 4
+171.7905 	 	End Instruction 4
+171.7907 	 	Begin Model Copy 4
+175.2409 	 	End Model Copy 4
+175.2456 	 	Begin Instruction 5
+176.5230 	 	End Instruction 5
+176.5232 	 	Begin Quadrille 5
+177.0089 	 	End Quadrille 5
+177.0113 	 	Begin Instruction 5
+177.4184 	 	End Instruction 5
+177.4185 	 	Begin Color Sort 5
+178.0248 	 	End Color Sort 5
+178.0269 	 	Begin Instruction 5
+178.6105 	 	End Instruction 5
+178.6107 	 	Begin Number Order 5
+186.4970 	 	End Number Order 5
+186.4992 	 	Begin Instruction 5
+187.1149 	 	End Instruction 5
+187.1151 	 	Begin Visual Search 5
+195.9846 	 	End Visual Search 5
+195.9847 	 	Begin Visual Search 5
+196.3928 	 	End Visual Search 5
+196.3929 	 	Begin Visual Search 5
+196.6089 	 	End Visual Search 5
+196.6090 	 	Begin Visual Search 5
+196.8249 	 	End Visual Search 5
+196.8251 	 	Begin Visual Search 5
+197.2252 	 	End Visual Search 5
+197.2273 	 	Begin Instruction 5
+197.9620 	 	End Instruction 5
+197.9621 	 	Begin Model Copy 5
+198.8488 	 	End Model Copy 5
+198.8532 	 	Begin Instruction 6
+199.2906 	 	End Instruction 6
+199.2908 	 	Begin Quadrille 6
+199.7769 	 	End Quadrille 6
+199.7793 	 	Begin Instruction 6
+200.3701 	 	End Instruction 6
+200.3703 	 	Begin Color Sort 6
+202.3608 	 	End Color Sort 6
+202.3630 	 	Begin Instruction 6
+203.4767 	 	End Instruction 6
+203.4769 	 	Begin Number Order 6
+204.1049 	 	End Number Order 6
+204.1070 	 	Begin Instruction 6
+206.5153 	 	End Instruction 6
+206.5154 	 	Begin Visual Search 6
+207.3364 	 	End Visual Search 6
+207.3365 	 	Begin Visual Search 6
+207.4808 	 	End Visual Search 6
+207.4809 	 	Begin Visual Search 6
+207.6247 	 	End Visual Search 6
+207.6249 	 	Begin Visual Search 6
+207.9848 	 	End Visual Search 6
+207.9850 	 	Begin Visual Search 6
+208.4004 	 	End Visual Search 6
+208.4046 	 	Begin Instruction 6
+209.8985 	 	End Instruction 6
+209.8986 	 	Begin Model Copy 6
+210.9048 	 	End Model Copy 6
+210.9093 	 	Begin Instruction 7
+213.4234 	 	End Instruction 7
+213.4235 	 	Begin Quadrille 7
+214.6488 	 	End Quadrille 7
+214.6510 	 	Begin Instruction 7
+216.2932 	 	End Instruction 7
+216.2934 	 	Begin Color Sort 7
+216.9365 	 	End Color Sort 7
+216.9386 	 	Begin Instruction 7
+217.8832 	 	End Instruction 7
+217.8833 	 	Begin Number Order 7
+259.2810 	 	End Number Order 7
+259.2833 	 	Begin Instruction 7
+262.5954 	 	End Instruction 7
+262.5956 	 	Begin Visual Search 7
+263.3368 	 	End Visual Search 7
+263.3370 	 	Begin Visual Search 7
+263.9045 	 	End Visual Search 7
+263.9047 	 	Begin Visual Search 7
+264.6085 	 	End Visual Search 7
+264.6086 	 	Begin Visual Search 7
+265.2084 	 	End Visual Search 7
+265.2085 	 	Begin Visual Search 7
+265.8729 	 	End Visual Search 7
+265.8750 	 	Begin Instruction 7
+267.5865 	 	End Instruction 7
+267.5866 	 	Begin Model Copy 7
+268.2564 	 	End Model Copy 7
+268.2609 	 	Begin Instruction 8
+269.9665 	 	End Instruction 8
+269.9666 	 	Begin Quadrille 8
+270.6327 	 	End Quadrille 8
+270.6349 	 	Begin Instruction 8
+271.4133 	 	End Instruction 8
+271.4135 	 	Begin Color Sort 8
+271.9207 	 	End Color Sort 8
+271.9227 	 	Begin Instruction 8
+272.4351 	 	End Instruction 8
+272.4353 	 	Begin Number Order 8
+273.1128 	 	End Number Order 8
+273.1151 	 	Begin Instruction 8
+273.6993 	 	End Instruction 8
+273.6995 	 	Begin Visual Search 8
+274.2648 	 	End Visual Search 8
+274.2650 	 	Begin Visual Search 8
+274.8808 	 	End Visual Search 8
+274.8810 	 	Begin Visual Search 8
+275.5047 	 	End Visual Search 8
+275.5049 	 	Begin Visual Search 8
+276.0885 	 	End Visual Search 8
+276.0886 	 	Begin Visual Search 8
+276.6087 	 	End Visual Search 8
+276.6107 	 	Begin Instruction 8
+277.3064 	 	End Instruction 8
+277.3066 	 	Begin Model Copy 8
+277.9285 	 	End Model Copy 8
+277.9325 	 	Begin Instruction 9
+278.6425 	 	End Instruction 9

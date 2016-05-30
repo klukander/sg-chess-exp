@@ -7,6 +7,8 @@ WCST experiment / ReKnow
 import sys
 import math
 
+import NewDlg
+
 global USE_ZMQ; USE_ZMQ = True
 if USE_ZMQ:
     import zmq
@@ -86,7 +88,7 @@ def ShowInstructionSequence( instrSequence ):
     for item in instrSequence['pages']:
         ShowPicInstruction( unicode(item['text']),int(item['duration']), item['pic'], location=1, flip=True)
 
-def ShowPicInstruction( txt, duration, picFile, col=(0.0, 0.0, 0.0), location=0, flip=False ):
+def ShowPicInstruction( txt, duration, picFile, col=(-1.0, -1.0, -1.0), location=0, flip=False ):
 
     hasPic = False; hasTxt = False; logTxt=False
     h = 0;
@@ -514,6 +516,48 @@ r = x
 b = space
 """
 
+# Gather info / dialog
+myDlg = NewDlg.NewDlg(title="The Amazing Smarter Glasses Experiment")
+
+myDlg.addText('Subject info') 
+# confInfo 0
+myDlg.addField('SubjID:', width=30)
+# confInfo 1
+myDlg.addField('Age:', 18)
+# confInfo 2
+myDlg.addField('Sex:', choices=["Male", "Female"])
+
+myDlg.addText('Experiment Info')
+# confInfo 3
+myDlg.addField('Use ZMQ:', choices=["Yes", "No"])
+
+# confInfo 4
+myDlg.addField('Run experiment on:', choices=["Projector", "Desktop"])
+
+myDlg.show()  # show dialog and wait for OK or Cancel
+
+if myDlg.OK:  # then the user pressed OK
+    confInfo = myDlg.data
+    print confInfo
+else:
+    print 'User cancelled'
+    core.quit()
+
+# SETUP LOGGING & CLOCKING
+testClock = core.Clock()
+logging.setDefaultClock( testClock )
+
+myLogLevel = logging.CRITICAL + 1
+logging.addLevel( myLogLevel, '' )
+myLog = logging.LogFile( '.'+s+'logs'+s+'' + confInfo[0] + '.log', filemode='w', level = myLogLevel, encoding='utf8') #= myLogLevel )
+
+if confInfo[3] == "Yes":
+    USE_ZMQ = True
+    print "Using ZMQ triggers"
+else:
+    USE_ZMQ = False
+    print "Skipping ZMQ"
+
 if USE_ZMQ:
     #initialize zmq
     context = zmq.Context()
@@ -528,22 +572,13 @@ if USE_ZMQ:
 #init random seed
 seed()
 
-# SETUP LOGGING & CLOCKING
-testClock = core.Clock()
-logging.setDefaultClock( testClock )
-
-myLogLevel = logging.CRITICAL + 1
-logging.addLevel( myLogLevel, '' )
-#replace test with subj
-myLog = logging.LogFile( '.'+s+'logs'+s+'' + 'test' + '.log', filemode='w', level = myLogLevel, encoding='utf8') #= myLogLevel )
-
 logThis('--------------------------------------------------------')
+logThis('Subj ID: ' + confInfo[0] )
+logThis('Run: ' + str(datetime.utcnow()) )
+logThis('Age: ' + str(confInfo[1]) )
+logThis('Sex: ' + str(confInfo[2]) )
 logThis('INFO')
 logThis('timestamp [event type] [event info]')
-"""logThis('timestamp [block].[trial]_STM [state for each rule G1 G2 L1 L2 : 0,1,2,3] RULE [current rule]')
-logThis('timestamp [block].[trial]_TGT [states for each card / Up, Right, Down, Left: 0,1,2,3; 0,1,2,3;...]') 
-logThis('timestamp [block].[trial]_RSP [correct: 1/0] [current rule: G1, G2, L1, L2] ANSWER [card selected: 1(up), 2(right), 3(down), 4(left)]')
-logThis('timestamp [block].[trial]_FDB [correct/fail] [correct answers] of [series length]')"""
 logThis('--------------------------------------------------------')
 
 #rendering window setup
@@ -558,7 +593,12 @@ mntrs.append( monitors.Monitor('DESKTOP', width=51.4, distance=50) ); monW.appen
 #w=69, h=149
 mntrs.append( monitors.Monitor('PROJECTOR', width=69.0, distance=50) ); monW.append(1400); monH.append(1050)
 
-midx=1
+#select monitor
+if confInfo[4] == "Projector":
+    midx=1
+else:
+    midx = 0
+    
 myMon=mntrs[midx]
 myMon.setSizePix((monW[midx], monH[midx]))
 
@@ -597,14 +637,18 @@ for item in config['sets']:
         instrSequence = json.loads( instrFile.read() )
         instrFile.close()
         zmqSend('IB')
+        logThis( "Begin Instruction %s" % item['part'])
         ShowInstructionSequence( instrSequence )
         zmqSend('IE')
+        logThis( "End Instruction %s" % item['part'])
 
     elif( item['type'] == 'numberorder'):
         zmqSend('TNB')
+        logThis( "Begin Number Order %s" % item['part'])
         DrawNumOrder( 110, -425, 15)
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TNE')
+        logThis( "End Number Order %s" % item['part'])
 
     elif( item['type'] == 'vissearch'):
 
@@ -613,44 +657,56 @@ for item in config['sets']:
             targetVisible = False
             
         zmqSend('TSB')
+        logThis( "Begin Visual Search %s" % item['part'])
         DrawVisSearch( 300, 100, 950, 950, 64, targetVisible, tgt=10, duration=-1)
         WaitForIt( keys=['x', 'b'], duration=-1 ) #only red&green buttons (x, m)
         zmqSend('TSE')
+        logThis( "End Visual Search %s" % item['part'])
 
     elif( item['type'] == 'modelcopy'):
         zmqSend('TMB')
+        logThis( "Begin Model Copy %s" % item['part'])
         DrawModelCopy( -300, 0, 512, 512, 7)
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TME')
+        logThis( "End Model Copy %s" % item['part'])
         
     elif( item['type'] == 'modelcopy2'):
         zmqSend('TMB')
+        logThis( "Begin Model Copy %s" % item['part'])
         DrawModelCopyFromPic( -300, 0, item['file'])
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TME')
+        logThis( "End Model Copy %s" % item['part'])
 
     elif( item['type'] == 'quadrille'):
         zmqSend('TQB')
-        #DrawChessBoard(250, -100, 500, 500, 4, flip=True)
+        logThis( "Begin Quadrille %s" % item['part'])
         DrawChessBoard(350, 0, 500, 500, 4, flip=True)
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TQE')
+        logThis( "End Quadrille %s" % item['part'])
 
     elif( item['type'] == 'colorsort'):
         zmqSend('TCB')
+        logThis( "Begin Color Sort %s" % item['part'])
         DrawSideBins(300, 300, 500, 250, flip=True)
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TCE')
+        logThis( "End Color Sort %s" % item['part'])
 
     elif( item['type'] == 'calib'):
         zmqSend('ECB')
+        logThis( "Begin Calibration %s" % item['part'])
         DrawCalibTargets(350, 0, 500, 500)
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('ECE')
+        logThis( "End Calibration %s" % item['part'])
 
     else:
         print 'unidentified item type in config: ' + item['type']
 
+    logging.flush()
 
 event.clearEvents()
 zmqSend("EQ")
