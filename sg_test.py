@@ -13,6 +13,8 @@ global USE_ZMQ; USE_ZMQ = True
 if USE_ZMQ:
     import zmq
 
+global keyWait; keyWait = 0.3
+
 
 """
 global USE_LSL; USE_LSL = False 
@@ -90,7 +92,7 @@ def ShowInstructionSequence( instrSequence ):
 
 def ShowPicInstruction( txt, duration, picFile, col=(-1.0, -1.0, -1.0), location=0, flip=False ):
 
-    hasPic = False; hasTxt = False; logTxt=False
+    hasPic = False; hasTxt = False; logTxt=True
     h = 0;
 
     pic = visual.ImageStim( win );
@@ -158,9 +160,13 @@ def ShowPicInstruction( txt, duration, picFile, col=(-1.0, -1.0, -1.0), location
         if logTxt:
             #triggerAndLog(portCodes['tlx'] + portCodes['segStart'] , "{:02d}".format(currentSet) + '.0_' + txt_to_log + " TLX start")
             keys = event.waitKeys(keys=['space'])
+            core.wait(keyWait)
+            event.clearEvents()
             #triggerAndLog(portcodes['tlx'] + portCodes['segStop'], "{:02d}".format(currentSet) + '.0_' + txt_to_log + ' TLX : ' + str(keys[0]))
         else:
             event.waitKeys()
+            core.wait(keyWait)
+            event.clearEvents()
     else:
         #if logTxt:
             #Ben, I'm not quite sure of how the portcodes (segStart, segStop) for a baseline section should be played?
@@ -234,6 +240,7 @@ def DrawCalibTargets(xpos, ypos, width, height, flip=False, duration=-1):
     tmp.fillColor = (-1, -1, -1); tmp.colorSpace = 'RGB'
     tmp.setPos((xpos, ypos))
     tmp.draw(win)
+    win.flip()
     
 """
     if duration < 0:
@@ -433,11 +440,12 @@ def DrawSideBins(left, top, width, height, flip=False, duration=-1):
 
     bin1 = visual.Rect(win, width, height)
     bin1.setPos((left, int(round(top+height/2))))
-    bin1.fillColor = (1.0, 0.0, 0.0)
+    bin1.fillColor = (.5, .5, .8)
+ #   bin1.lineColor = (-1.0, -1.0, -1.0)
     
     bin2 = visual.Rect(win, width, height)
     bin2.setPos((left, int(round(-1*top-height/2))))
-    bin2.fillColor = (0.0, 1.0, 0.0)
+    bin2.fillColor = (.8, .5, .5)
     
     bin1.draw(win)
     bin2.draw(win)
@@ -478,6 +486,8 @@ def Sync():
 def WaitForIt( keys=['x'], duration=-1 ):
     if duration < 0:
         keys = event.waitKeys(keys)
+        core.wait(keyWait)
+        event.clearEvents()
     else:
         core.wait(duration)
 
@@ -549,7 +559,7 @@ logging.setDefaultClock( testClock )
 
 myLogLevel = logging.CRITICAL + 1
 logging.addLevel( myLogLevel, '' )
-myLog = logging.LogFile( '.'+s+'logs'+s+'' + confInfo[0] + '.log', filemode='w', level = myLogLevel, encoding='utf8') #= myLogLevel )
+myLog = logging.LogFile( '.'+s+'logs'+s+'log_' + confInfo[0] + '.log', filemode='w', level = myLogLevel, encoding='utf8') #= myLogLevel )
 
 if confInfo[3] == "Yes":
     USE_ZMQ = True
