@@ -342,6 +342,84 @@ def DrawVisSearch(left, top, width, height, itemnum, targetVisible=True, tgt=10,
     
     win.flip()
 
+def DrawVisSearchNumberOf(left, top, width, height, itemnum, nTargets=2, tgt=10, duration=-1 ):
+
+    #load images
+
+    names=(
+        'bishop_b.jpg', \
+        'bishop_b2.jpg', \
+        'bishop_w.jpg', \
+        'bishop_w2.jpg', \
+        'king_b.jpg', \
+        'king_w.jpg', \
+        'knight_b.jpg', \
+        'knight_b2.jpg', \
+        'knight_w.jpg', \
+        'knight_w2.jpg', \
+        'queen_w.jpg', \
+        'tower_b.jpg', \
+        'tower_b2.jpg', \
+        'tower_w.jpg', \
+        'tower_w2.jpg')
+
+    gridpoints=[]
+    ptn = int(math.ceil( math.sqrt(itemnum) ))
+    for i in range( ptn ):
+        for j in range( ptn ):
+            jx = randint(0,40)-20; jy = randint(-15,15)
+            pt = (left+(i-.5)*width/ptn + jx-(width/2), top+(j)*height/ptn + jy-(height/2))
+            gridpoints.append(pt)
+
+    #shuffle locations
+    gridpoints = sample( gridpoints, len(gridpoints))
+    itemlist=[]
+
+    dstrs = range(1, 15)
+    dstrs.remove(tgt) # this has to be removed anyway to not show up :)
+
+    for i in range(nTargets):
+
+        #works as long as tgt+i isn't > length of gridpoints
+
+        target = visual.ImageStim( win );
+        target.setImage( "pics\\" + names[tgt] )
+        target.setPos( gridpoints[tgt+i] )
+        del gridpoints[tgt+i] #avoid overlapping location
+        target.setSize(75)
+        target.setOri( randint(0, 360) )
+        target.draw( win )
+
+    count = len( dstrs )
+
+    for i in dstrs: #dstrs: #range(15-1): #removed one
+        picFile = "pics\\" + names[i]
+        picFile = string.replace( picFile, '\\', s )
+        pic = visual.ImageStim( win );
+        pic.setImage( picFile );
+        pic.setSize(75)
+        
+        itemlist.append( pic )
+
+    """for i in range(15):
+        #itemlist[i].setPos( (randint(left, width), randint(top, height) ) )
+        itemlist[i].setPos( gridpoints[i])
+        itemlist[i].setOri( randint(0,180)-90 )
+        itemlist[i].draw(win)
+    """
+    for i in range( itemnum-nTargets ):
+        #pic = visual.ImageStim( win )
+        #pic.setImage( itemlist[i%15] )
+        itemlist[i%count].setPos( gridpoints[i] )
+        itemlist[i%count].setOri( randint(0,360) )
+        itemlist[i%count].draw(win)
+
+#    if targetVisible:
+#        target.draw(win)
+    
+    win.flip()
+
+
 """
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
@@ -462,6 +540,7 @@ def zmqSend(msg):
     if USE_ZMQ:
         print "sending %s" % msg
         socketOut.send("%s" % (msg))
+        socketOutVideo.send("%s" % (msg))
         #socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
 
 def zmqListen():
@@ -571,13 +650,19 @@ else:
 if USE_ZMQ:
     #initialize zmq
     context = zmq.Context()
+    videoContext = zmq.Context()
     #socketIn = context.socket(zmq.SUB)
     socketOut = context.socket(zmq.PAIR)
+    socketOutVideo = context.socket(zmq.PAIR)
     #portIn = "5557"
     portOut = "5555"
+    portOutVideo = "5556"
     #socketIn.connect("tcp://127.0.0.1:%s" % portIn)
 #socketOut.connect("tcp://127.0.0.1:%s" % portOut)
     socketOut.bind("tcp://192.168.2.183:%s" % portOut)
+    socketOutVideo.bind("tcp://192.168.2.183:%s" % portOutVideo )
+    #socketOutVideo.setsockopt(  zmq.RCVTIMEO, 1 )
+    #socketOut.setsockopt(  zmq.RCVTIMEO, 1 )
 
 #init random seed
 seed()
@@ -637,6 +722,10 @@ config = json.loads( confFile.read() )
 confFile.close()
 
 Sync()
+
+#for i in range(5):
+#    DrawVisSearchNumberOf( 300, 100, 950, 950, 64, i, tgt=10, duration=-1)
+#    WaitForIt()
 
 #run sets according to config loaded
 for item in config['sets']:
