@@ -656,11 +656,11 @@ for item in config['sets']:
         if item['target'] == 'false':
             targetVisible = False
             
-        zmqSend('TSB')
+        zmqSend('TVB')
         logThis( "Begin Visual Search %s" % item['part'])
         DrawVisSearch( 300, 100, 950, 950, 64, targetVisible, tgt=10, duration=-1)
         WaitForIt( keys=['x', 'b'], duration=-1 ) #only red&green buttons (x, m)
-        zmqSend('TSE')
+        zmqSend('TVE')
         logThis( "End Visual Search %s" % item['part'])
 
     elif( item['type'] == 'modelcopy'):
