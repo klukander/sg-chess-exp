@@ -13,6 +13,8 @@ global USE_ZMQ; USE_ZMQ = True
 if USE_ZMQ:
     import zmq
 
+global keyWait; keyWait = 0.3
+
 
 """
 global USE_LSL; USE_LSL = False 
@@ -90,7 +92,7 @@ def ShowInstructionSequence( instrSequence ):
 
 def ShowPicInstruction( txt, duration, picFile, col=(-1.0, -1.0, -1.0), location=0, flip=False ):
 
-    hasPic = False; hasTxt = False; logTxt=False
+    hasPic = False; hasTxt = False; logTxt=True
     h = 0;
 
     pic = visual.ImageStim( win );
@@ -158,9 +160,13 @@ def ShowPicInstruction( txt, duration, picFile, col=(-1.0, -1.0, -1.0), location
         if logTxt:
             #triggerAndLog(portCodes['tlx'] + portCodes['segStart'] , "{:02d}".format(currentSet) + '.0_' + txt_to_log + " TLX start")
             keys = event.waitKeys(keys=['space'])
+            core.wait(keyWait)
+            event.clearEvents()
             #triggerAndLog(portcodes['tlx'] + portCodes['segStop'], "{:02d}".format(currentSet) + '.0_' + txt_to_log + ' TLX : ' + str(keys[0]))
         else:
             event.waitKeys()
+            core.wait(keyWait)
+            event.clearEvents()
     else:
         #if logTxt:
             #Ben, I'm not quite sure of how the portcodes (segStart, segStop) for a baseline section should be played?
@@ -234,6 +240,7 @@ def DrawCalibTargets(xpos, ypos, width, height, flip=False, duration=-1):
     tmp.fillColor = (-1, -1, -1); tmp.colorSpace = 'RGB'
     tmp.setPos((xpos, ypos))
     tmp.draw(win)
+    win.flip()
     
 """
     if duration < 0:
@@ -335,6 +342,84 @@ def DrawVisSearch(left, top, width, height, itemnum, targetVisible=True, tgt=10,
     
     win.flip()
 
+def DrawVisSearchNumberOf(left, top, width, height, itemnum, nTargets=2, tgt=10, duration=-1 ):
+
+    #load images
+
+    names=(
+        'bishop_b.jpg', \
+        'bishop_b2.jpg', \
+        'bishop_w.jpg', \
+        'bishop_w2.jpg', \
+        'king_b.jpg', \
+        'king_w.jpg', \
+        'knight_b.jpg', \
+        'knight_b2.jpg', \
+        'knight_w.jpg', \
+        'knight_w2.jpg', \
+        'queen_w.jpg', \
+        'tower_b.jpg', \
+        'tower_b2.jpg', \
+        'tower_w.jpg', \
+        'tower_w2.jpg')
+
+    gridpoints=[]
+    ptn = int(math.ceil( math.sqrt(itemnum) ))
+    for i in range( ptn ):
+        for j in range( ptn ):
+            jx = randint(0,40)-20; jy = randint(-15,15)
+            pt = (left+(i-.5)*width/ptn + jx-(width/2), top+(j)*height/ptn + jy-(height/2))
+            gridpoints.append(pt)
+
+    #shuffle locations
+    gridpoints = sample( gridpoints, len(gridpoints))
+    itemlist=[]
+
+    dstrs = range(1, 15)
+    dstrs.remove(tgt) # this has to be removed anyway to not show up :)
+
+    for i in range(nTargets):
+
+        #works as long as tgt+i isn't > length of gridpoints
+
+        target = visual.ImageStim( win );
+        target.setImage( "pics\\" + names[tgt] )
+        target.setPos( gridpoints[tgt+i] )
+        del gridpoints[tgt+i] #avoid overlapping location
+        target.setSize(75)
+        target.setOri( randint(0, 360) )
+        target.draw( win )
+
+    count = len( dstrs )
+
+    for i in dstrs: #dstrs: #range(15-1): #removed one
+        picFile = "pics\\" + names[i]
+        picFile = string.replace( picFile, '\\', s )
+        pic = visual.ImageStim( win );
+        pic.setImage( picFile );
+        pic.setSize(75)
+        
+        itemlist.append( pic )
+
+    """for i in range(15):
+        #itemlist[i].setPos( (randint(left, width), randint(top, height) ) )
+        itemlist[i].setPos( gridpoints[i])
+        itemlist[i].setOri( randint(0,180)-90 )
+        itemlist[i].draw(win)
+    """
+    for i in range( itemnum-nTargets ):
+        #pic = visual.ImageStim( win )
+        #pic.setImage( itemlist[i%15] )
+        itemlist[i%count].setPos( gridpoints[i] )
+        itemlist[i%count].setOri( randint(0,360) )
+        itemlist[i%count].draw(win)
+
+#    if targetVisible:
+#        target.draw(win)
+    
+    win.flip()
+
+
 """
     if duration < 0:
         keys = event.waitKeys()#keyList=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
@@ -433,11 +518,12 @@ def DrawSideBins(left, top, width, height, flip=False, duration=-1):
 
     bin1 = visual.Rect(win, width, height)
     bin1.setPos((left, int(round(top+height/2))))
-    bin1.fillColor = (1.0, 0.0, 0.0)
+    bin1.fillColor = (.5, .5, .8)
+ #   bin1.lineColor = (-1.0, -1.0, -1.0)
     
     bin2 = visual.Rect(win, width, height)
     bin2.setPos((left, int(round(-1*top-height/2))))
-    bin2.fillColor = (0.0, 1.0, 0.0)
+    bin2.fillColor = (.8, .5, .5)
     
     bin1.draw(win)
     bin2.draw(win)
@@ -454,6 +540,7 @@ def zmqSend(msg):
     if USE_ZMQ:
         print "sending %s" % msg
         socketOut.send("%s" % (msg))
+        socketOutVideo.send("%s" % (msg))
         #socketOut.send("%s %s" % ("you_will_never_see_me", "crapperjack"))
 
 def zmqListen():
@@ -478,6 +565,8 @@ def Sync():
 def WaitForIt( keys=['x'], duration=-1 ):
     if duration < 0:
         keys = event.waitKeys(keys)
+        core.wait(keyWait)
+        event.clearEvents()
     else:
         core.wait(duration)
 
@@ -549,7 +638,7 @@ logging.setDefaultClock( testClock )
 
 myLogLevel = logging.CRITICAL + 1
 logging.addLevel( myLogLevel, '' )
-myLog = logging.LogFile( '.'+s+'logs'+s+'' + confInfo[0] + '.log', filemode='w', level = myLogLevel, encoding='utf8') #= myLogLevel )
+myLog = logging.LogFile( '.'+s+'logs'+s+'log_' + confInfo[0] + '.log', filemode='w', level = myLogLevel, encoding='utf8') #= myLogLevel )
 
 if confInfo[3] == "Yes":
     USE_ZMQ = True
@@ -561,13 +650,19 @@ else:
 if USE_ZMQ:
     #initialize zmq
     context = zmq.Context()
+    videoContext = zmq.Context()
     #socketIn = context.socket(zmq.SUB)
     socketOut = context.socket(zmq.PAIR)
+    socketOutVideo = context.socket(zmq.PAIR)
     #portIn = "5557"
     portOut = "5555"
+    portOutVideo = "5556"
     #socketIn.connect("tcp://127.0.0.1:%s" % portIn)
 #socketOut.connect("tcp://127.0.0.1:%s" % portOut)
     socketOut.bind("tcp://192.168.2.183:%s" % portOut)
+    socketOutVideo.bind("tcp://192.168.2.183:%s" % portOutVideo )
+    #socketOutVideo.setsockopt(  zmq.RCVTIMEO, 1 )
+    #socketOut.setsockopt(  zmq.RCVTIMEO, 1 )
 
 #init random seed
 seed()
@@ -627,6 +722,10 @@ config = json.loads( confFile.read() )
 confFile.close()
 
 Sync()
+
+#for i in range(5):
+#    DrawVisSearchNumberOf( 300, 100, 950, 950, 64, i, tgt=10, duration=-1)
+#    WaitForIt()
 
 #run sets according to config loaded
 for item in config['sets']:
