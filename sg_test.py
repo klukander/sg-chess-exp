@@ -763,8 +763,9 @@ for item in config['sets']:
         #    targetVisible = False
         targetn=int(item['target_n'])
             
-        zmqSend('TSB')
+        zmqSend('TVB')
         logThis( "Begin Visual Search %s" % item['part'])
+
         #change for number of targets between 0-2
         #DrawVisSearch( 300, 100, 950, 950, 64, targetVisible, tgt=10, duration=-1)
         #WaitForIt( keys=['x', 'b'], duration=-1 ) #only red&green buttons (x, m)
