@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  ".\\pics\\queen_w.jpg", 
           "duration": "-1",
-          "text": "Ja eikun etsimään kuningatarta.\nPaina vihreää jos löydät hänen korkeutensa, punaista jos et."
+          "text": "Ja eikun etsimään kuningatarta.\nVastaa löytämiesi kuningatarten lukumäärällä.\n\nVoit aloittaa!"
          }
     ]
 }

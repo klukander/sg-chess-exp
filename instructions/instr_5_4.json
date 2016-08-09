@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  ".\\pics\\queen_w.jpg", 
           "duration": "-1",
-          "text": "Ja kuningatarta pitäisi taas etsiä muiden kuvien joukosta. Jos kuningatar löytyy, paina vihreää, jos ei, paina punaista."
+          "text": "Ja kuningatarta pitäisi taas etsiä muiden kuvien joukosta. \n\nVastaa painamalla kuningatarten lukumäärää vastaavaa painiketta."
          }
     ]
 }

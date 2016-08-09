@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  ".\\pics\\queen_w.jpg", 
           "duration": "-1",
-          "text": "Nyt etsitään kuningatarta muiden nappuloiden joukosta. Paina vihreää painiketta jos löydät kuningattaren, punaista jos et.\n\nTehtävä alkaa painamalla vastauspainiketta."
+          "text": "Nyt etsitään kuningatarta muiden nappuloiden joukosta.\n\nKuningattaria voi lymyillä pöydällä siis yksi tai kaksi, tai on mahdollista että kuningatar ei ole saapunut juhliin ollenkaan.\n\nVastaa painamalla lukumäärää vastaavaa vastauspainiketta.\n\nTehtävä alkaa painamalla vastauspainiketta."
          }
     ]
 }

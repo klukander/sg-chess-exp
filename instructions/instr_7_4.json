@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  ".\\pics\\queen_w.jpg", 
           "duration": "-1",
-          "text": "Kuningatar on taas piiloutunut muiden nappuloiden joukkoon (tai jättänyt saapumatta paikalle). Mikäli kuningatar löytyy, paina vihreää, mikäli ei, paina punaista."
+          "text": "Kuningatar on taas piiloutunut muiden nappuloiden joukkoon (tai jättänyt saapumatta paikalle).\nKerro kuinka monta kuningatarta löysit. Tehtävä toistuu taas viidesti."
          }
     ]
 }

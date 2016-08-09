@@ -103,8 +103,8 @@ def ShowPicInstruction( txt, duration, picFile, col=(-1.0, -1.0, -1.0), location
         logTxt=True
         if txt[0]=='*': # 'text' field in a NasaTLX instruction should start with asterix
             symbol='*'
-        elif txt[0]=='£': # 'text' field in a baseline instruction should start with plus
-            symbol='£'
+        elif txt[0]=='+': # 'text' field in a baseline instruction should start with plus
+            symbol='+' #why was there a pound in here?
             hasTxt=False
         else:
             logTxt=False
@@ -342,6 +342,10 @@ def DrawVisSearch(left, top, width, height, itemnum, targetVisible=True, tgt=10,
     
     win.flip()
 
+def ClearScreen( duration = 0.5 ):
+    win.flip( clearBuffer=True )
+    core.wait( duration )
+
 def DrawVisSearchNumberOf(left, top, width, height, itemnum, nTargets=2, tgt=10, duration=-1 ):
 
     #load images
@@ -569,6 +573,7 @@ def WaitForIt( keys=['x'], duration=-1 ):
         event.clearEvents()
     else:
         core.wait(duration)
+    return keys
 
 def DrawNumOrder( xpos, ypos, number, duration=-1):
     wsq = 75
@@ -649,18 +654,19 @@ else:
 
 if USE_ZMQ:
     #initialize zmq
-    context = zmq.Context()
-    videoContext = zmq.Context()
-    #socketIn = context.socket(zmq.SUB)
+    
+    context = zmq.Context()    
     socketOut = context.socket(zmq.PAIR)
-    socketOutVideo = context.socket(zmq.PAIR)
-    #portIn = "5557"
     portOut = "5555"
+    #wlan viimeisin osoite socketOut.bind("tcp://192.168.2.228:%s" % portOut)
+    socketOut.bind("tcp://192.168.2.218:%s" % portOut)
+    
+    videoContext = zmq.Context()
+    socketOutVideo = videoContext.socket(zmq.PAIR)
     portOutVideo = "5556"
-    #socketIn.connect("tcp://127.0.0.1:%s" % portIn)
-#socketOut.connect("tcp://127.0.0.1:%s" % portOut)
-    socketOut.bind("tcp://192.168.2.183:%s" % portOut)
-    socketOutVideo.bind("tcp://192.168.2.183:%s" % portOutVideo )
+    #socketOutVideo.bind("tcp://192.168.2.228:%s" % portOutVideo )
+    socketOutVideo.bind("tcp://192.168.2.218:%s" % portOutVideo )
+
     #socketOutVideo.setsockopt(  zmq.RCVTIMEO, 1 )
     #socketOut.setsockopt(  zmq.RCVTIMEO, 1 )
 
@@ -717,7 +723,7 @@ global winH; winH = win.size[1]
   
 #load config
 #TODO: ADD ERROR CHECKING! Here we trust the json files to be correctly formed and valid
-confFile = open( '.'+s+'configs'+s+'testconfig'+'.json' )
+confFile = open( '.'+s+'configs'+s+'run_config'+'.json' )
 config = json.loads( confFile.read() )
 confFile.close()
 
@@ -752,15 +758,38 @@ for item in config['sets']:
     elif( item['type'] == 'vissearch'):
 
         targetVisible = True
-        if item['target'] == 'false':
-            targetVisible = False
+        #change for number of targets between 0-2
+        #if item['target'] == 'false':
+        #    targetVisible = False
+        targetn=int(item['target_n'])
             
         zmqSend('TSB')
         logThis( "Begin Visual Search %s" % item['part'])
-        DrawVisSearch( 300, 100, 950, 950, 64, targetVisible, tgt=10, duration=-1)
-        WaitForIt( keys=['x', 'b'], duration=-1 ) #only red&green buttons (x, m)
+        #change for number of targets between 0-2
+        #DrawVisSearch( 300, 100, 950, 950, 64, targetVisible, tgt=10, duration=-1)
+        #WaitForIt( keys=['x', 'b'], duration=-1 ) #only red&green buttons (x, m)
+        DrawVisSearchNumberOf( 300, 100, 950, 950, 64, nTargets=targetn, tgt=10, duration=-1)
+        resp = WaitForIt( keys=['x', 'space', 'b'], duration=-1 ) #only red&green buttons (x, m)
+
         zmqSend('TSE')
-        logThis( "End Visual Search %s" % item['part'])
+        answer = -1 #to avoid fail on comparison if something else gets pressed
+        if resp[0] == 'x':
+            answer = 0
+        if resp[0] == 'space':
+            answer = 1
+        if resp[0] == 'm':
+            answer = 2
+        if answer == -1:
+            logThis( resp ) 
+            logThis( "End Visual Search %s : invalid answer" % item['part'])            
+        if answer == targetn:
+            logThis( "End Visual Search %s : correct" % item['part'])
+        else:
+            logThis( "End Visual Search %s : false" % item['part'])
+        #logThis( "End Visual Search %s" % item['part'])
+
+        #add a 0.5s empty screen to avoid change blindness
+        ClearScreen( 0.5 )
 
     elif( item['type'] == 'modelcopy'):
         zmqSend('TMB')
@@ -789,7 +818,8 @@ for item in config['sets']:
     elif( item['type'] == 'colorsort'):
         zmqSend('TCB')
         logThis( "Begin Color Sort %s" % item['part'])
-        DrawSideBins(300, 300, 500, 250, flip=True)
+        #DrawSideBins(300, 300, 500, 250, flip=True)
+        DrawSideBins(350, 250, 500, 190, flip=True)
         WaitForIt( keys=['space'], duration=-1 ) 
         zmqSend('TCE')
         logThis( "End Color Sort %s" % item['part'])

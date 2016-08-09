@@ -2,7 +2,7 @@
     "pages" : [
          {"pic":  ".\\pics\\queen_w.jpg", 
           "duration": "-1",
-          "text": "Vielä pitäisi etsiä kuningatarta muiden joukosta.\nPaina vihreää jos löydät kuningattaren, punaista jos et."
+          "text": "Vielä viimeiset kuningattaret karussa. Montako kuningatarta löydät piileskelemästä alaistensa joukosta?\n\nPaina vastauspainiketta aloittaaksesi."
          }
     ]
 }
